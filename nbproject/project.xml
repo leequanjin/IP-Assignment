@@ -5,5 +5,10 @@
         <data xmlns="http://www.netbeans.org/ns/php-project/1">
             <name>IP-Assignment</name>
         </data>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>CSS</word>
+            <word>navbar</word>
+            <word>Sidenav</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>
