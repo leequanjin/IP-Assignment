@@ -1,3 +1,14 @@
+<?php
+$xmlFile = '../xml-files/categories.xml';
+
+if (file_exists($xmlFile)) {
+    $dom = new DOMDocument();
+    $dom->load($xmlFile);
+
+    $categories = $dom->getElementsByTagName('category');
+}
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,7 +19,7 @@
         <!-- bootstrap CSS link -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
         <!-- CSS file link -->
-        <link href="style.css" rel="stylesheet">
+        <link href="../style.css" rel="stylesheet">
     </head>
     <body>
         <!-- Navbar -->
@@ -140,18 +151,21 @@
                 <!-- Sidenav -->
                 <div class="col-md-2 bg-secondary p-0 mb-4">
                     <ul class="navbar-nav me-auto text-center">
-                        <li style="background-color: #2B3035;" class="nav-item py-2 border-bottom"><h4 class="text-light py-2">Categories</h4></li>
-                        <li class="nav-item bg-secondary py-2 border-bottom"><a href="#" class="nav-link text-light">Category 1</a></li>
-                        <li class="nav-item bg-secondary py-2 border-bottom"><a href="#" class="nav-link text-light">Category 2</a></li>
-                        <li class="nav-item bg-secondary py-2 border-bottom"><a href="#" class="nav-link text-light">Category 3</a></li>
-                        <li class="nav-item bg-secondary py-2 border-bottom"><a href="#" class="nav-link text-light">Category 4</a></li>
-                    </ul>
-                    <ul class="navbar-nav me-auto text-center">
-                        <li style="background-color: #2B3035;" class="nav-item py-2 border-bottom"><h4 class="text-light py-2">Price Range</h4></li>
-                        <li class="nav-item bg-secondary py-2 border-bottom"><a href="#" class="nav-link text-light">Range 1</a></li>
-                        <li class="nav-item bg-secondary py-2 border-bottom"><a href="#" class="nav-link text-light">Range 2</a></li>
-                        <li class="nav-item bg-secondary py-2 border-bottom"><a href="#" class="nav-link text-light">Range 3</a></li>
-                        <li class="nav-item bg-secondary py-2 border-bottom"><a href="#" class="nav-link text-light">Range 4</a></li>
+                        <li style="background-color: #2B3035;" class="nav-item py-2 border-bottom">
+                            <h4 class="text-light py-2">Categories</h4>
+                        </li>
+                        <?php if (!empty($categories)): ?>
+                            <?php foreach ($categories as $category): ?>
+                                <?php $title = $category->getElementsByTagName('title')->item(0)->nodeValue; ?>
+                                <li class="nav-item bg-secondary py-2 border-bottom">
+                                    <a href="index.php?category=<?php echo urlencode($title); ?>" class="nav-link text-light"><?php echo htmlspecialchars($title); ?></a>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <li class="nav-item bg-secondary py-2 border-bottom">
+                                <a href="#" class="nav-link text-light">No categories available.</a>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </div>
 

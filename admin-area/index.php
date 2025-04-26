@@ -8,7 +8,7 @@
         <!-- bootstrap CSS link -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
         <!-- CSS file link -->
-        <link href="style.css" rel="stylesheet">
+        <link href="../style.css" rel="stylesheet">
     </head>
     <body>
         <!-- Navbar -->
@@ -28,7 +28,7 @@
         </div>
 
         <div class="bg-light p-3">
-            <h3 class="text-center">Manage Details</h3>
+            <h3 class="text-center">Admin Dashboard</h3>
         </div>
 
         <div class="row">
@@ -49,7 +49,9 @@
         
         <div class="container my-5">
             <?php
-            if(isset($_GET['insert_category'])) {
+            if(isset($_GET['insert_product'])) {
+                include('./insert_product.php');
+            } else if(isset($_GET['insert_category'])) {
                 include('./insert_category.php');
             } 
             ?>
