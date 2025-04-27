@@ -1,11 +1,17 @@
 <?php
-$xmlFile = '../xml-files/categories.xml';
+$categoriesXml = '../xml-files/categories.xml';
+$productsXml = '../xml-files/products.xml'; // <-- NEW
 
-if (file_exists($xmlFile)) {
+if (file_exists($categoriesXml)) {
     $dom = new DOMDocument();
-    $dom->load($xmlFile);
-
+    $dom->load($categoriesXml);
     $categories = $dom->getElementsByTagName('category');
+}
+
+if (file_exists($productsXml)) {
+    $productDom = new DOMDocument();
+    $productDom->load($productsXml);
+    $products = $productDom->getElementsByTagName('product');
 }
 ?>
 
@@ -29,30 +35,24 @@ if (file_exists($xmlFile)) {
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Logo</a>
+                    <a class="navbar-brand" href="index.php">Logo</a>
                     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                         <ul class="navbar-nav me-auto my-2 my-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Product</a>
+                                <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Register</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Contact</a>
+                                <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i><sup> 0</sup></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i><sup>1</sup></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Total Price:100/-</a>
+                                <a class="nav-link" href="#">Total Price: RM 0.00</a>
                             </li>
                         </ul>
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <form class="d-flex" role="search" method="GET" action="index.php">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                             <button class="btn btn-outline-secondary" type="submit">Search</button>
                         </form>
                     </div>
@@ -83,69 +83,54 @@ if (file_exists($xmlFile)) {
                 <!-- Products -->
                 <div class="col-md-10">
                     <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <div class="card" style="width: 18rem;">
-                                <img src="..." class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <?php
+                        $selectedCategory = isset($_GET['category']) ? $_GET['category'] : null;
+                        $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : null;
+                        ?>
+                        <?php if (!empty($products)): ?>
+                            <?php
+                            $productFound = false;
+                            foreach ($products as $product):
+                                $title = $product->getElementsByTagName('title')->item(0)->nodeValue;
+                                $description = $product->getElementsByTagName('description')->item(0)->nodeValue;
+                                $price = $product->getElementsByTagName('price')->item(0)->nodeValue;
+                                $imageNode = $product->getElementsByTagName('image')->item(0);
+                                $image = $imageNode ? $imageNode->nodeValue : 'no-image.jpg';
+                                $category = $product->getElementsByTagName('category')->item(0)->nodeValue;
+
+                                if ($selectedCategory && $selectedCategory !== $category) {
+                                    continue;
+                                }
+
+                                if ($searchQuery && stripos($title, $searchQuery) === false) {
+                                    continue;
+                                }
+
+                                $productFound = true;
+
+                                $imagePath = '../admin-area/uploads/' . $image;
+                                ?>
+                                <div class="col-md-4 mb-4">
+                                    <div class="card" style="width: 18rem;">
+                                        <img src="<?php echo htmlspecialchars($imagePath); ?>" loading="lazy" class="card-img-top" alt="Product Image">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo htmlspecialchars($title); ?></h5>
+                                            <p class="card-text"><?php echo htmlspecialchars($description); ?></p>
+                                            <p class="card-text fw-bold">$<?php echo htmlspecialchars($price); ?></p>
+                                            <a href="#" class="btn btn-primary">Add to cart</a>
+                                            <a href="#" class="btn btn-secondary">View more</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card" style="width: 18rem;">
-                                <img src="..." class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card" style="width: 18rem;">
-                                <img src="..." class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card" style="width: 18rem;">
-                                <img src="..." class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-primary">Add to cart</a>
-                                    <a href="#" class="btn btn-secondary">View more</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card" style="width: 18rem;">
-                                <img src="..." class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-primary">Add to cart</a>
-                                    <a href="#" class="btn btn-secondary">View more</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card" style="width: 18rem;">
-                                <img src="..." class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-primary">Add to cart</a>
-                                    <a href="#" class="btn btn-secondary">View more</a>
-                                </div>
-                            </div>
-                        </div>
+                            <?php endforeach; ?>
+
+                            <?php if (!$productFound): ?>
+                                <p>No products found.</p>
+                            <?php endif; ?>
+
+                        <?php else: ?>
+                            <p>No products available.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <!-- Sidenav -->
@@ -181,8 +166,7 @@ if (file_exists($xmlFile)) {
             <!-- Copyright -->
         </footer>
         <!-- Footer -->
-        <?php
-        ?>
+        <?php ?>
         <!-- font awesome link -->
         <script src="https://kit.fontawesome.com/67a319415d.js" crossorigin="anonymous"></script>
         <!-- bootstrap JS link -->
