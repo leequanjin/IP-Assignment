@@ -5,6 +5,56 @@
     <description>3-seat sofa, Hakebo dark grey</description>
     <category>Sofas</category>
     <price>1495</price>
-    <image>uploads/1745698218_4166ea39e8.png</image>
+    <image>1745698218_4166ea39e8.png</image>
+  </product>
+  <product>
+    <title>LILLEHEM</title>
+    <description>Modular corner sofa, 2-seat, Gunnared dark grey/metal</description>
+    <category>Sofas</category>
+    <price>1750</price>
+    <image>1745742499_541daaac06.png</image>
+  </product>
+  <product>
+    <title>SÖDERHAMN</title>
+    <description>3-seat sofa, Tonerud red</description>
+    <category>Sofas</category>
+    <price>1930</price>
+    <image>1745742683_c02281c93e.png</image>
+  </product>
+  <product>
+    <title>LAGKAPTEN / ALEX</title>
+    <description>Desk, white stained oak effect/white, 140x60 cm</description>
+    <category>Tables</category>
+    <price>428</price>
+    <image>1745742728_5239b0e4f1.png</image>
+  </product>
+  <product>
+    <title>LINNMON / ADILS</title>
+    <description>Table, white, 100x60 cm</description>
+    <category>Tables</category>
+    <price>119</price>
+    <image>1745742763_2085aa0617.png</image>
+  </product>
+  <product>
+    <title>TROTTEN</title>
+    <description>Desk, white, 120x70 cm</description>
+    <category>Tables</category>
+    <price>299</price>
+    <image>1745742796_79943dc905.png</image>
+  </product>
+  <product>
+    <title>LINDKNUD</title>
+    <description>Rug, high pile, dark grey, 80x150 cm</description>
+    <category>Rugs &amp; Mats</category>
+    <price>175</price>
+    <image>1745748882_58c82da52a.png</image>
+    <image>1745748882_65fe000261.png</image>
+    <image>1745748882_a4c7a9b13e.png</image>
+  </product>
+  <product>
+    <title>VOLLERSLEV</title>
+    <description>Rug, high pile, white, 133x195 cm</description>
+    <category>Rugs &amp; Mats</category>
+    <price>699</price>
   </product>
 </products>

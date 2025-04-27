@@ -20,14 +20,16 @@ $productTitleError = $productDescError = $productCategoryError = $productImageEr
 $successMessage = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["insert_product"])) {
-    // Prepare input values
     $product_title = prepareInput($_POST["product_title"] ?? '');
     $product_desc = prepareInput($_POST["product_desc"] ?? '');
     $product_category = prepareInput($_POST["product_category"] ?? '');
     $product_price = prepareInput($_POST["product_price"] ?? '');
-    $product_image = $_FILES["product_image"]["name"] ?? '';
+    $product_images = [
+        'product_image_1' => $_FILES["product_image_1"] ?? null,
+        'product_image_2' => $_FILES["product_image_2"] ?? null,
+        'product_image_3' => $_FILES["product_image_3"] ?? null
+    ];
 
-    // Validate fields
     $hasError = false;
 
     if (empty($product_title)) {
@@ -42,29 +44,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["insert_product"])) {
         $productCategoryError = "Please select a category.";
         $hasError = true;
     }
-    if (empty($product_image)) {
-        $productImageError = "Please upload a product image.";
-        $hasError = true;
-    }
+
     if (empty($product_price)) {
         $productPriceError = "Please enter a product price.";
         $hasError = true;
     }
 
     if (!$hasError) {
-        // Handle image upload
-        $uploadDir = 'uploads/';
-        $imageFilePath = '';
+        $imageFileNames = [];
 
-        if ($_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
-            $fileExtension = pathinfo($product_image, PATHINFO_EXTENSION);
-            $uniqueFileName = time() . "_" . bin2hex(random_bytes(5)) . '.' . $fileExtension;
-            $imageFilePath = $uploadDir . $uniqueFileName;
+        foreach ($product_images as $inputName => $file) {
+            if ($file && $file['error'] === UPLOAD_ERR_OK) {
+                // Valid file, upload and process
+                $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $newFileName = time() . "_" . bin2hex(random_bytes(5)) . '.' . $fileExtension;
+                $uploadPath = 'uploads/' . $newFileName;
 
-            // Move the uploaded file to the desired location
-            if (!move_uploaded_file($_FILES['product_image']['tmp_name'], $imageFilePath)) {
-                $productImageError = "Failed to upload the image.";
-                $hasError = true;
+                if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                    $imageFileNames[] = $newFileName;
+                } else {
+                    $productImageError = "Error uploading one of the images.";
+                    $hasError = true;
+                    break;
+                }
             }
         }
 
@@ -85,20 +87,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["insert_product"])) {
                     $dom->appendChild($root);
                 }
 
-                // Create new product node
                 $newProduct = $dom->createElement('product');
 
                 $titleElement = $dom->createElement('title', $product_title);
                 $descElement = $dom->createElement('description', $product_desc);
                 $categoryElement = $dom->createElement('category', $product_category);
                 $priceElement = $dom->createElement('price', $product_price);
-                $imageElement = $dom->createElement('image', $imageFilePath);
 
                 $newProduct->appendChild($titleElement);
                 $newProduct->appendChild($descElement);
                 $newProduct->appendChild($categoryElement);
                 $newProduct->appendChild($priceElement);
-                $newProduct->appendChild($imageElement);
+
+                foreach ($imageFileNames as $fileName) {
+                    $imageElement = $dom->createElement('image', $fileName);
+                    $newProduct->appendChild($imageElement);
+                }
 
                 $root->appendChild($newProduct);
                 $dom->save($productsXml);
@@ -163,8 +167,10 @@ function prepareInput($data) {
 
     <div>
         <div class="mb-3">
-            <label class="form-label">Product Image</label>
-            <input type="file" name="product_image" class="form-control">
+            <label class="form-label">Product Images</label>
+            <input type="file" name="product_image_1" class="form-control mb-2">
+            <input type="file" name="product_image_2" class="form-control mb-2">
+            <input type="file" name="product_image_3" class="form-control mb-2">
         </div>
         <div class="form-text m-1 mb-3 <?php echo ($productImageError ? 'text-danger' : ''); ?>">
             <?php if ($productImageError): ?>
