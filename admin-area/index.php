@@ -46,17 +46,21 @@
             </div>  
         </div>
         <!-- Navbar -->
-        
+
         <div class="container my-5">
             <?php
-            if(isset($_GET['insert_product'])) {
+            if (isset($_GET['insert_product'])) {
                 include('./insert_product.php');
-            } else if(isset($_GET['insert_category'])) {
+            } else if (isset($_GET['view_product'])) {
+                include('./view_product.php');
+            } else if (isset($_GET['edit_product'])) {
+                include('./edit_product.php');
+            } else if (isset($_GET['insert_category'])) {
                 include('./insert_category.php');
-            } 
+            }
             ?>
         </div>
-        
+
         <!-- Footer -->
         <footer class="text-center text-white" style="background-color: #2B3035;">
             <!-- Copyright -->
