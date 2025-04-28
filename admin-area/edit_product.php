@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once '../product-observer/Subject.php';
 require_once '../product-observer/ProductSubject.php';
 require_once '../product-observer/Observer.php';
@@ -171,9 +173,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edit_product"])) {
                             $oldTitle, $oldDescription, $oldCategory, $oldPrice, $oldStock, $oldImage, // old data
                             $product_title, $product_desc, $product_category, $product_price, $product_stock, $imageFileName // new data
                     );
-                    
-                    session_start();
-                    $_SESSION['edit_success'] = "Product has been updated successfully!";
+
+                    $_SESSION['success_message'] = "Product has been updated successfully!";
 
                     header("Location: index.php?view_product");
                     exit();
