@@ -3,6 +3,8 @@ require_once '../product-observer/Subject.php';
 require_once '../product-observer/ProductSubject.php';
 require_once '../product-observer/Observer.php';
 require_once '../product-observer/ProductInventoryObserver.php';
+require_once '../product-observer/ProductLogObserver.php';
+require_once '../product-observer/ProductPriceChangeObserver.php';
 
 $categoriesXml = '../xml-files/categories.xml';
 $categoriesList = [];
@@ -142,6 +144,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edit_product"])) {
             foreach ($products as $product) {
                 $id = (int) $product->getElementsByTagName('id')->item(0)->nodeValue;
                 if ($id === $product_id) {
+                    $oldTitle = $product->getElementsByTagName('title')->item(0)->nodeValue;
+                    $oldDescription = $product->getElementsByTagName('description')->item(0)->nodeValue;
+                    $oldCategory = $product->getElementsByTagName('category')->item(0)->nodeValue;
+                    $oldPrice = $product->getElementsByTagName('price')->item(0)->nodeValue;
+                    $oldStock = $product->getElementsByTagName('stock')->item(0)->nodeValue;
+                    $oldImage = $product->getElementsByTagName('image')->item(0)->nodeValue;
+
                     $product->getElementsByTagName('title')->item(0)->nodeValue = $product_title;
                     $product->getElementsByTagName('description')->item(0)->nodeValue = $product_desc;
                     $product->getElementsByTagName('category')->item(0)->nodeValue = $product_category;
@@ -150,13 +159,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edit_product"])) {
                     $product->getElementsByTagName('image')->item(0)->nodeValue = $imageFileName;
 
                     $dom->save($productsXml);
-                    
-                    $productSubject = new ProductSubject();
-                    
-                    $productInventoryObserver = new ProductInventoryObserver($productSubject);
-                    
-                    $productSubject->updateProduct($product_id, $product_title, $product_desc, $product_category, $product_price, $product_stock, $imageFileName);
 
+                    $productSubject = new ProductSubject();
+
+                    $productInventoryObserver = new ProductInventoryObserver($productSubject);
+                    $ProductPriceChangeObserver = new ProductPriceChangeObserver($productSubject);
+                    $ProductLogObserver = new ProductLogObserver($productSubject);
+
+                    $productSubject->updateProduct(
+                            $product_id,
+                            $oldTitle, $oldDescription, $oldCategory, $oldPrice, $oldStock, $oldImage, // old data
+                            $product_title, $product_desc, $product_category, $product_price, $product_stock, $imageFileName // new data
+                    );
+                    
                     session_start();
                     $_SESSION['edit_success'] = "Product has been updated successfully!";
 
