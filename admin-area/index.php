@@ -59,6 +59,10 @@
                 include('./delete_product.php');
             } else if (isset($_GET['insert_category'])) {
                 include('./insert_category.php');
+            } else if (isset($_GET['view_category'])) {
+                include('./view_category.php');
+            } else if (isset($_GET['delete_category'])) {
+                include('./delete_category.php');
             }
             ?>
         </div>

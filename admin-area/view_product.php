@@ -5,13 +5,13 @@ $dom->load($xmlFile);
 $products = $dom->getElementsByTagName('product');
 
 session_start();
-if (isset($_SESSION['edit_success'])):
+if (isset($_SESSION['success_message'])):
     ?>
     <script type="text/javascript">
-        alert("<?php echo addslashes($_SESSION['edit_success']); ?>");
+        alert("<?php echo addslashes($_SESSION['success_message']); ?>");
     </script>
     <?php
-    unset($_SESSION['edit_success']);
+    unset($_SESSION['success_message']);
 endif;
 ?>
 
@@ -29,7 +29,6 @@ endif;
     </thead>
     <tbody>
         <?php
-        // Loop through each product and display its data
         foreach ($products as $product) {
             $id = $product->getElementsByTagName('id')->item(0)->nodeValue;
             $title = $product->getElementsByTagName('title')->item(0)->nodeValue;
