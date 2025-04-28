@@ -2,12 +2,12 @@
 <products>
   <product>
     <id>1</id>
-    <title>HOTELLRUM</title>
-    <description>Rug, high pile, blue/green white, 200x300 cm</description>
-    <category>Rugs &amp; Mats</category>
-    <price>999</price>
+    <title>HOTELLRUM3</title>
+    <description>Rug, high pile, blue/ white, 400x300 cm</description>
+    <category>Tables</category>
+    <price>400</price>
     <stock>5</stock>
-    <image>1745773664_c46de5ca21.png</image>
+    <image>1745835447_98b8c519fc.png</image>
   </product>
   <product>
     <id>2</id>
@@ -15,7 +15,7 @@
     <description>Rug, high pile, blue/green white, 200x300 cm</description>
     <category>Rugs &amp; Mats</category>
     <price>9999</price>
-    <stock>666</stock>
+    <stock>6666</stock>
     <image>1745774581_11e43ddb82.png</image>
   </product>
 </products>
