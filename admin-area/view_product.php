@@ -35,16 +35,8 @@ endif;
             $title = $product->getElementsByTagName('title')->item(0)->nodeValue;
             $price = $product->getElementsByTagName('price')->item(0)->nodeValue;
             $stock = $product->getElementsByTagName('stock')->item(0)->nodeValue;
-            $imageNodes = $product->getElementsByTagName('image');
-            $images = [];
-
-            // Collect all image filenames (if multiple images exist)
-            foreach ($imageNodes as $imageNode) {
-                $images[] = $imageNode->nodeValue;
-            }
-
-            // Check if there are images and display the first one
-            $imageSrc = !empty($images) ? '../admin-area/uploads/' . $images[0] : '../admin-area/uploads/no-image.jpg';
+            $image = $product->getElementsByTagName('image')->item(0)->nodeValue;
+            $imageSrc = '../admin-area/uploads/' . $image;
             ?>
             <tr>
                 <th scope="row" class="text-center"><?php echo $id ?></th>
@@ -53,7 +45,7 @@ endif;
                 <td class="text-center">RM <?php echo number_format($price, 2) ?></td>
                 <td class="text-center"><?php echo $stock ?></td>
                 <td class="text-center"><a href="index.php?edit_product=<?php echo $id ?>" class="text-dark"><i class="fa-solid fa-pen-to-square fa-lg"></i></a></td>
-                <td class="text-center"><a href="delete_product.php?id=<?php echo $id ?>" class="text-dark"><i class="fa-solid fa-trash fa-lg"></i></a></td>
+                <td class="text-center"><a href="index.php?delete_product=<?php echo $id ?>" class="text-dark"><i class="fa-solid fa-trash fa-lg"></i></a></td>
             </tr>
             <?php
         }
