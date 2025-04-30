@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<products></products>
+<products>
+  <product>
+    <id>1</id>
+    <title>HOTELLRUM</title>
+    <description>Rug, high pile, blue/green white, 400x300 cm</description>
+    <category>Rugs &amp; Mats</category>
+    <price>400</price>
+    <stock>90</stock>
+    <image>1746014415_390bb966e1.png</image>
+  </product>
+</products>

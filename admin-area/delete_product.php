@@ -16,6 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["delete_product"])) {
         $id = $product->getElementsByTagName('id')->item(0)->nodeValue;
 
         if ($id == $productId) {
+            $image = $product->getElementsByTagName('image')->item(0)->nodeValue;
+            unlink('uploads/' . $image);
             $product->parentNode->removeChild($product);
             $dom->save($xmlFile);
             $_SESSION['success_message'] = "Product deleted successfully!";
