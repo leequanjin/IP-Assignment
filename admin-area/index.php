@@ -34,14 +34,14 @@
         <div class="row">
             <div class="col-md-12 bg-secondary p-2"> 
                 <div class="button text-center">
-                    <button class="btn btn-secondary"><a href="index.php?insert_product" class="nav-link">Insert Product</a></button>
-                    <button class="btn btn-secondary"><a href="index.php?view_product" class="nav-link">View Product</a></button>
-                    <button class="btn btn-secondary"><a href="index.php?insert_category" class="nav-link">Insert Categories</a></button>
-                    <button class="btn btn-secondary"><a href="index.php?view_category" class="nav-link">View Categories</a></button>
-                    <button class="btn btn-secondary"><a href="index.php?all_order" class="nav-link">All Orders</a></button>
-                    <button class="btn btn-secondary"><a href="index.php?all_payment" class="nav-link">All Payments</a></button>
-                    <button class="btn btn-secondary"><a href="index.php?list_user" class="nav-link">List Users</a></button>
-                    <button class="btn btn-secondary"><a href="" class="nav-link">Logout</a></button>
+                    <button class="btn btn-secondary"><a href="index.php?module=product&action=insert" class="nav-link">Insert Product</a></button>
+                    <button class="btn btn-secondary"><a href="index.php?module=product&action=view" class="nav-link">View Product</a></button>
+                    <button class="btn btn-secondary"><a href="index.php?module=category&action=insert" class="nav-link">Insert Categories</a></button>
+                    <button class="btn btn-secondary"><a href="index.php?module=category&action=view" class="nav-link">View Categories</a></button>
+                    <button class="btn btn-secondary"><a href="#" class="nav-link">All Orders</a></button>
+                    <button class="btn btn-secondary"><a href="#" class="nav-link">All Payments</a></button>
+                    <button class="btn btn-secondary"><a href="#" class="nav-link">List Users</a></button>
+                    <button class="btn btn-secondary"><a href="#" class="nav-link">Logout</a></button>
                 </div>
             </div>  
         </div>
@@ -49,20 +49,18 @@
 
         <div class="container my-5">
             <?php
-            if (isset($_GET['insert_product'])) {
-                include('./insert_product.php');
-            } else if (isset($_GET['view_product'])) {
-                include('./view_product.php');
-            } else if (isset($_GET['edit_product'])) {
-                include('./edit_product.php');
-            } else if (isset($_GET['delete_product'])) {
-                include('./delete_product.php');
-            } else if (isset($_GET['insert_category'])) {
-                include('./insert_category.php');
-            } else if (isset($_GET['view_category'])) {
-                include('./view_category.php');
-            } else if (isset($_GET['delete_category'])) {
-                include('./delete_category.php');
+            $module = $_GET['module'] ?? null;
+            $action = $_GET['action'] ?? null;
+            if ($module === 'category') {
+                require_once 'controllers/CategoryController.php';
+                $controller = new CategoryController();
+                $controller->handleRequest($action);
+            } elseif ($module === 'product') {
+                require_once 'controllers/ProductController.php';
+                $controller = new ProductController();
+                $controller->handleRequest($action);
+            } else {
+                echo '<p class="text-center">Select an option above to continue.</p>';
             }
             ?>
         </div>

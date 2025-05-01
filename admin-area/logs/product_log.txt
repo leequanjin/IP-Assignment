@@ -2,3 +2,5 @@
 [2025-04-30 08:34:55] Action: Update Product, Product ID: 1, Title: HOTELLRUM, Category changed from: Rugs & Mats to Rugs &amp; Mats, Price changed from: 999 to 999999999, Stock changed from: 50 to 1, Imagechanged from: 1745849287_4c642cf995.png to 1745994876_60027e8bd3.png
 [2025-04-30 08:38:21] Action: Update Product, Product ID: 2, Title: EKTORP, Imagechanged from: 1745994833_40e1020d13.png to 1745995101_c91c864000.png
 [2025-04-30 08:38:49] Action: Update Product, Product ID: 2, Title: EKTORP, Imagechanged from: 1745995101_c91c864000.png to 1745995129_76df714dcd.png
+[2025-05-01 16:51:37] Action: Update Product, Product ID: 1, Title: HOTELLRUM, Category changed from: Rugs & Mats to Rugs &amp; Mats
+[2025-05-01 16:51:56] Action: Update Product, Product ID: 1, Title: HOTELLRUM, Title changed from: HOTELLRUM to HOTELLRUM2, Category changed from: Rugs & Mats to Rugs &amp; Mats
