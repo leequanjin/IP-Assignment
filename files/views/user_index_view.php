@@ -39,6 +39,15 @@
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                             <button class="btn btn-outline-secondary" type="submit">Search</button>
                         </form>
+                        <form class="d-flex ms-2" method="GET" action="userIndex.php">
+                            <select class="form-select me-2" name="currency">
+                                <?php $selectedCurrency = $_GET['currency'] ?? 'MYR'; ?>
+                                <option value="MYR" <?php echo $selectedCurrency === 'MYR' ? 'selected' : ''; ?>>MYR</option>
+                                <option value="USD" <?php echo $selectedCurrency === 'USD' ? 'selected' : ''; ?>>USD</option>
+                            </select>
+                            <button class="btn btn-outline-secondary" type="submit">Change</button>
+                        </form>
+
                     </div>
                 </div>
             </nav>
@@ -86,6 +95,14 @@
                                     continue;
                                 }
 
+                                $currencyConverter = new CurrencyConverter();
+                                $selectedCurrency = $_GET['currency'] ?? 'MYR';
+                                $convertedPrice = $price;
+
+                                if ($selectedCurrency !== 'MYR') {
+                                    $convertedPrice = $currencyConverter->convertCurrency($price, 'MYR', $selectedCurrency);
+                                }
+
                                 $productFound = true;
 
                                 $imagePath = '../files/uploads/' . $image;
@@ -96,7 +113,9 @@
                                         <div class="card-body">
                                             <h5 class="card-title"><?php echo htmlspecialchars($title); ?></h5>
                                             <p class="card-text"><?php echo htmlspecialchars($description); ?></p>
-                                            <p class="card-text fw-bold">RM <?php echo htmlspecialchars($price); ?></p>
+                                            <p class="card-text fw-bold">
+                                                <?php echo htmlspecialchars($selectedCurrency); ?> <?php echo number_format($convertedPrice, 2); ?>
+                                            </p>
                                             <a href="#" class="btn btn-secondary">Add to cart</a>
                                         </div>
                                     </div>

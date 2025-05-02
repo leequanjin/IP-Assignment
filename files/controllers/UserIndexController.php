@@ -5,6 +5,7 @@
  */
 require_once 'models/CategoryModel.php';
 require_once 'models/ProductModel.php';
+require_once 'apis/CurrencyConverter.php';
 
 class UserIndexController {
 
