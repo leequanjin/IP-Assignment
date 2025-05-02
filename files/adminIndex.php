@@ -34,10 +34,10 @@
         <div class="row">
             <div class="col-md-12 bg-secondary p-2"> 
                 <div class="button text-center">
-                    <button class="btn btn-secondary"><a href="index.php?module=product&action=insert" class="nav-link">Insert Product</a></button>
-                    <button class="btn btn-secondary"><a href="index.php?module=product&action=view" class="nav-link">View Product</a></button>
-                    <button class="btn btn-secondary"><a href="index.php?module=category&action=insert" class="nav-link">Insert Categories</a></button>
-                    <button class="btn btn-secondary"><a href="index.php?module=category&action=view" class="nav-link">View Categories</a></button>
+                    <button class="btn btn-secondary"><a href="adminIndex.php?module=product&action=insert" class="nav-link">Insert Product</a></button>
+                    <button class="btn btn-secondary"><a href="adminIndex.php?module=product&action=view" class="nav-link">View Product</a></button>
+                    <button class="btn btn-secondary"><a href="adminIndex.php?module=category&action=insert" class="nav-link">Insert Categories</a></button>
+                    <button class="btn btn-secondary"><a href="adminIndex.php?module=category&action=view" class="nav-link">View Categories</a></button>
                     <button class="btn btn-secondary"><a href="#" class="nav-link">All Orders</a></button>
                     <button class="btn btn-secondary"><a href="#" class="nav-link">All Payments</a></button>
                     <button class="btn btn-secondary"><a href="#" class="nav-link">List Users</a></button>

@@ -300,11 +300,33 @@ class ProductModel {
         foreach ($products as $product) {
             $id = $product->getElementsByTagName('id')->item(0)->nodeValue;
             if ($id === $idToDelete) {
+                $image = $product->getElementsByTagName('image')->item(0)->nodeValue;
+                unlink('uploads/' . $image);
                 $product->parentNode->removeChild($product);
                 $dom->save($this->xmlFile);
                 return true;
             }
         }
         return false;
+    }
+    
+    public function getProducts($search = null, $filterCategory = null) {
+        $dom = new DOMDocument();
+        $dom->load($this->xmlFile);
+        $products = $dom->getElementsByTagName('product');
+
+        $filtered = [];
+
+        foreach ($products as $product) {
+            $title = $product->getElementsByTagName('title')->item(0)->nodeValue;
+            $category = $product->getElementsByTagName('category')->item(0)->nodeValue;
+
+            if ($filterCategory && $filterCategory !== $category) continue;
+            if ($search && stripos($title, $search) === false) continue;
+
+            $filtered[] = $product;
+        }
+
+        return $filtered;
     }
 }

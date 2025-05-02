@@ -32,7 +32,7 @@ class CategoryController {
                 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["delete_category"])) {
                     $titleToDelete = $_GET["delete_category"];
                     if ($this->model->deleteCategory($titleToDelete)) {
-                        header("Location: index.php?module=category&action=view");
+                        header("Location: adminIndex.php?module=category&action=view");
                         exit;
                     }
                 }

@@ -17,7 +17,7 @@ require_once 'controllers/CategoryController.php';
             <tr>
                 <td class="text-center"><?php echo $title ?></td>
                 <td class="text-center">
-                    <a href="index.php?module=category&action=view&delete_category=<?php echo urlencode($title); ?>" class="text-dark"
+                    <a href="adminIndex.php?module=category&action=view&delete_category=<?php echo urlencode($title); ?>" class="text-dark"
                        onclick="return confirm('Are you sure you want to delete the category: <?php echo $title ?>?')">
                         <i class="fa-solid fa-trash fa-lg"></i>
                     </a>

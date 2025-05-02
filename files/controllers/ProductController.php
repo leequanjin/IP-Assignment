@@ -42,7 +42,7 @@ class ProductController {
                 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["delete_product"])) {
                     $idToDelete = $_GET["delete_product"];
                     if ($this->model->deleteProduct($idToDelete)) {
-                        header("Location: index.php?module=product&action=view");
+                        header("Location: adminIndex.php?module=product&action=view");
                         exit;
                     }
                 }
@@ -94,8 +94,8 @@ class ProductController {
                             empty($productPriceError) &&
                             empty($productStockError)
                     ) {
-                        //header("Location: index.php?module=product&action=view");
-                        //exit;
+                        header("Location: adminIndex.php?module=product&action=view");
+                        exit;
                     }
                 }
 
