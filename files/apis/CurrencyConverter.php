@@ -4,7 +4,7 @@ class CurrencyConverter {
 
     private $base_url;
     private $access_key;
-    private $endpoint = 'convert';
+    private $endpoint = 'live';
     
     public function __construct() {
         $config = include 'config/config.php';
@@ -12,12 +12,11 @@ class CurrencyConverter {
         $this->access_key = $config['currency_api']['access_key'];
     }
 
-    function convertCurrency($amount, $from, $to) {
+    function getConversionRate($to) {
         $url = $this->base_url . $this->endpoint
                 . '?access_key=' . $this->access_key
-                . '&from=' . $from
-                . '&to=' . $to
-                . '&amount=' . $amount;
+                . '&source=' . 'MYR'
+                . '&currencies=' . $to;
 
         $response = file_get_contents($url);
 
@@ -26,6 +25,6 @@ class CurrencyConverter {
         }
 
         $data = json_decode($response, true); //When true, JSON objects will be returned as associative arrays
-        return $data['result'] ?? false;
+        return $data['quotes']['MYR' . $to] ?? false;
     }
 }

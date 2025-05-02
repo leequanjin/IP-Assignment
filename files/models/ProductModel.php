@@ -140,8 +140,9 @@ class ProductModel {
         return [$productTitleError, $productDescError, $productCategoryError, $productImageError, $productPriceError, $productStockError, $successMessage];
     }
 
-    public function getProductData($idToEdit) {
+    public function getProductData($id) {
         $productData = [
+            'id' => $id,
             'title' => '',
             'desc' => '',
             'category' => '',
@@ -155,8 +156,8 @@ class ProductModel {
         $products = $dom->getElementsByTagName('product');
 
         foreach ($products as $product) {
-            $id = $product->getElementsByTagName('id')->item(0)->nodeValue;
-            if ($id === $idToEdit) {
+            $current_id = $product->getElementsByTagName('id')->item(0)->nodeValue;
+            if ($current_id == $id) {
                 $productData['title'] = $product->getElementsByTagName('title')->item(0)->nodeValue;
                 $productData['desc'] = $product->getElementsByTagName('description')->item(0)->nodeValue;
                 $productData['category'] = $product->getElementsByTagName('category')->item(0)->nodeValue;

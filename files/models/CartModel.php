@@ -82,4 +82,52 @@ class CartModel {
 
         $dom->save($this->xmlFile);
     }
+
+    public function getUserCart($user_id) {
+        $cartProducts = [];
+
+        $dom = new DOMDocument();
+        $dom->load($this->xmlFile);
+        $carts = $dom->getElementsByTagName('cart');
+
+        foreach ($carts as $cart) {
+            $current_user_id = $cart->getElementsByTagName('userId')->item(0)->nodeValue;
+            if ($current_user_id == $user_id) {
+                $products = $cart->getElementsByTagName('product');
+                foreach ($products as $product) {
+                    $productId = $product->getElementsByTagName('productId')->item(0)->nodeValue;
+                    $productQty = $product->getElementsByTagName('productQty')->item(0)->nodeValue;
+                    $cartProducts[$productId] = $productQty;
+                }
+                break;
+            }
+        }
+
+        return $cartProducts;
+    }
+
+    public function removeFromCart($user_id, $product_id) {
+        $dom = new DOMDocument();
+        $dom->load($this->xmlFile);
+        $carts = $dom->getElementsByTagName('cart');
+
+        foreach ($carts as $cart) {
+            $current_user_id = $cart->getElementsByTagName('userId')->item(0)->nodeValue;
+            if ($current_user_id == $user_id) {
+                $productsNode = $cart->getElementsByTagName('products')->item(0);
+                $products = $productsNode->getElementsByTagName('product');
+
+                foreach ($products as $product) {
+                    $current_product_id = $product->getElementsByTagName('productId')->item(0)->nodeValue;
+                    if ($current_product_id == $product_id) {
+                        $productsNode->removeChild($product);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        $dom->save($this->xmlFile);
+    }
 }

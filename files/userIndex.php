@@ -28,10 +28,7 @@
                                 <a class = "nav-link" href = "#">Register</a>
                             </li>
                             <li class = "nav-item">
-                                <a class = "nav-link" href = "userIndex.php?module=cart&action=view"><i class = "fa-solid fa-cart-shopping"></i><sup> 0</sup></a>
-                            </li>
-                            <li class = "nav-item">
-                                <a class = "nav-link" href = "#">Total Price: RM 0.00</a>
+                                <a class = "nav-link" href = "userIndex.php?module=cart&action=view">View Cart</a>
                             </li>
                         </ul>
                         <form class="d-flex" role="search" method="GET" action="userIndex.php">
@@ -39,6 +36,13 @@
                             <button class="btn btn-outline-secondary" type="submit">Search</button>
                         </form>
                         <form class="d-flex ms-2" method="GET" action="userIndex.php">
+                            <?php
+                            foreach ($_GET as $key => $value) {
+                                if ($key !== 'currency') {
+                                    echo '<input type="hidden" name="' . htmlspecialchars($key) . '" value="' . htmlspecialchars($value) . '">';
+                                }
+                            }
+                            ?>
                             <select class="form-select me-2" name="currency">
                                 <?php $selectedCurrency = $_GET['currency'] ?? 'MYR'; ?>
                                 <option value="MYR" <?php echo $selectedCurrency === 'MYR' ? 'selected' : ''; ?>>MYR</option>
@@ -67,20 +71,21 @@
             <p class="text-center">Affordable design for every home</p>
         </div>
 
-        <?php
-        $module = $_GET['module'] ?? null;
-        $action = $_GET['action'] ?? null;
-        if ($module === 'cart') {
-            require_once 'controllers/CartController.php';
-            $controller = new CartController();
-            $controller->handleRequest($action);
-        } else {
-            require_once 'controllers/UserIndexController.php';
-            $controller = new UserIndexController();
-            $controller->index();
-        }
-        ?>
-
+        <div class="container my-5">
+            <?php
+            $module = $_GET['module'] ?? null;
+            $action = $_GET['action'] ?? null;
+            if ($module === 'cart') {
+                require_once 'controllers/CartController.php';
+                $controller = new CartController();
+                $controller->handleRequest($action);
+            } else {
+                require_once 'controllers/UserIndexController.php';
+                $controller = new UserIndexController();
+                $controller->index();
+            }
+            ?>
+        </div>
 
         <footer class="text-center text-white" style="background-color: #2B3035;">
             <div class="text-center p-3">
