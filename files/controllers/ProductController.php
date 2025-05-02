@@ -12,7 +12,6 @@ class ProductController {
     }
 
     public function handleRequest($action) {
-        $action = $action ?? ($_GET['action'] ?? null);
 
         switch ($action) {
             case 'insert':
