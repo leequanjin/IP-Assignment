@@ -3,14 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/controllers/ProductController.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/xml-files/carts.xml</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/controllers/CartController.php</file>
             <file>file:/C:/xampp/htdocs/IP-Assignment/files/userIndex.php</file>
             <file>file:/C:/xampp/htdocs/IP-Assignment/files/controllers/UserIndexController.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/models/CartModel.php</file>
             <file>file:/C:/xampp/htdocs/IP-Assignment/files/models/CategoryModel.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/adminIndex.php</file>
             <file>file:/C:/xampp/htdocs/IP-Assignment/files/models/ProductModel.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/user_index_view.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/config/config.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/apis/CurrencyConverter.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/user_home.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/user_cart.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/controllers/CategoryController.php</file>
             <file>file:/C:/xampp/htdocs/IP-Assignment/.gitignore</file>
         </group>
     </open-files>

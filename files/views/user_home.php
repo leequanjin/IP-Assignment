@@ -5,6 +5,13 @@
             <div class="row">
                 <?php if (!empty($products)): ?>
                     <?php
+                    $conversionRate = 1;
+                    $currencyConverter = new CurrencyConverter();
+                    $selectedCurrency = $_GET['currency'] ?? 'MYR';
+                    if ($selectedCurrency !== 'MYR') {
+                        $conversionRate = $currencyConverter->getConversionRate($selectedCurrency);
+                    }
+
                     $productFound = false;
                     foreach ($products as $product):
                         $id = $product->getElementsByTagName('id')->item(0)->nodeValue;
@@ -23,13 +30,7 @@
                             continue;
                         }
 
-                        $currencyConverter = new CurrencyConverter();
-                        $selectedCurrency = $_GET['currency'] ?? 'MYR';
-                        $convertedPrice = $price;
-
-                        if ($selectedCurrency !== 'MYR') {
-                            $convertedPrice = $currencyConverter->convertCurrency($price, 'MYR', $selectedCurrency);
-                        }
+                        $convertedPrice = $price * $conversionRate;
 
                         $productFound = true;
 
@@ -44,7 +45,7 @@
                                     <p class="card-text fw-bold">
                                         <?php echo htmlspecialchars($selectedCurrency); ?> <?php echo number_format($convertedPrice, 2); ?>
                                     </p>
-                                    <a href="userIndex.php?module=cart&action=add&add_to_cart=<?php echo $id; ?>" class="btn btn-secondary">Add to cart</a>
+                                    <a href="userIndex.php?module=cart&action=add&currency=<?php echo $selectedCurrency;?>&add_to_cart=<?php echo $id; ?>" class="btn btn-secondary">Add to cart</a>
                                 </div>
                             </div>
                         </div>
