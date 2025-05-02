@@ -22,7 +22,7 @@ require_once 'controllers/ProductController.php';
             $price = $product->getElementsByTagName('price')->item(0)->nodeValue;
             $stock = $product->getElementsByTagName('stock')->item(0)->nodeValue;
             $image = $product->getElementsByTagName('image')->item(0)->nodeValue;
-            $imageSrc = '../admin-area/uploads/' . $image;
+            $imageSrc = '../files/uploads/' . $image;
             ?>
             <tr>
                 <th scope="row" class="text-center"><?php echo $id ?></th>
@@ -30,9 +30,9 @@ require_once 'controllers/ProductController.php';
                 <td><img src="<?php echo $imageSrc ?>" alt="<?php echo $title ?>" width="100%" height="150px" style="object-fit: contain;" /></td>
                 <td class="text-center">RM <?php echo number_format($price, 2) ?></td>
                 <td class="text-center"><?php echo $stock ?></td>
-                <td class="text-center"><a href="index.php?module=product&action=edit&edit_product=<?php echo urlencode($id); ?>" class="text-dark"><i class="fa-solid fa-pen-to-square fa-lg"></i></a></td>
+                <td class="text-center"><a href="adminIndex.php?module=product&action=edit&edit_product=<?php echo urlencode($id); ?>" class="text-dark"><i class="fa-solid fa-pen-to-square fa-lg"></i></a></td>
                 <td class="text-center">
-                    <a href="index.php?module=product&action=view&delete_product=<?php echo urlencode($id); ?>" class="text-dark"
+                    <a href="adminIndex.php?module=product&action=view&delete_product=<?php echo urlencode($id); ?>" class="text-dark"
                        onclick="return confirm('Are you sure you want to delete the product: <?php echo $id . ". " . $title ?>?')">
                         <i class="fa-solid fa-trash fa-lg"></i>
                     </a></td>

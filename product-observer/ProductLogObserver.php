@@ -29,10 +29,10 @@ class ProductLogObserver implements Observer {
         if ($this->oldData['title'] !== $this->newData['title']) {
             $logMessage .= 'Title changed from: ' . $this->oldData['title'] . ' to ' . $this->newData['title'] . ', ';
         }
-        if ($this->oldData['description'] !== $this->newData['description']) {
+        if ($this->oldData['description'] !== html_entity_decode($this->newData['description'])) {
             $logMessage .= 'Description changed from: ' . $this->oldData['description'] . ' to ' . $this->newData['description'] . ', ';
         }
-        if ($this->oldData['category'] !== $this->newData['category']) {
+        if ($this->oldData['category'] !== html_entity_decode($this->newData['category'])) {
             $logMessage .= 'Category changed from: ' . $this->oldData['category'] . ' to ' . $this->newData['category'] . ', ';
         }
         if ($this->oldData['price'] !== $this->newData['price']) {
