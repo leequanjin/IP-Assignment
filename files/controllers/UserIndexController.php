@@ -5,6 +5,7 @@
  */
 require_once 'models/CategoryModel.php';
 require_once 'models/ProductModel.php';
+require_once 'models/CartModel.php';
 require_once 'apis/CurrencyConverter.php';
 
 class UserIndexController {
@@ -18,7 +19,7 @@ class UserIndexController {
 
         $categories = $categoryModel->getAllCategories();
         $products = $productModel->getProducts($search, $selectedCategory);
-
-        include 'views/user_index_view.php';
+        
+        include 'views/user_home.php';
     }
 }
