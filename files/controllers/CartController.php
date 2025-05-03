@@ -2,6 +2,9 @@
 require_once 'models/CartModel.php';
 require_once 'models/ProductModel.php';
 require_once 'apis/CurrencyConverter.php';
+require_once 'decorator/BasePrice.php';
+require_once 'decorator/DiscountDecorator.php';
+
 
 class CartController {
 

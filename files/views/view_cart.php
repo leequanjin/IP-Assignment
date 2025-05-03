@@ -34,7 +34,12 @@ require_once 'controllers/CartController.php';
 
             $convertedPrice = $price * $conversionRate;
 
-            $subTotal = $qty * $convertedPrice;
+            $calculator = new BasePrice();
+            if (isset($_GET['voucher']) && $_GET['voucher'] == 'DISCOUNT10') {
+                $calculator = new DiscountDecorator($calculator, 0.10); // 10% discount
+            }
+
+            $subTotal = $calculator->calculatePrice($convertedPrice, $qty);
             $grandTotal += $subTotal;
             ?>
             <tr>
@@ -47,19 +52,26 @@ require_once 'controllers/CartController.php';
                     <a href="userIndex.php?module=cart&action=delete&product_id=<?php echo urlencode($id); ?>&currency=<?php echo urlencode($selectedCurrency); ?>" class="btn btn-danger btn-sm"
                        onclick="return confirm('Remove <?php echo $title ?> from cart?')">Delete</a>
                 </td>
+                <td><input type="text" name="voucher" placeholder="Enter Voucher Code"></td>
             </tr>
         <?php endforeach; ?>
+        <?php if (isset($_GET['voucher']) && $_GET['voucher'] == 'DISCOUNT10'): ?>
+        <div class="alert alert-success text-center fw-bold">
+            🎉 10% Discount Applied with Voucher: DISCOUNT10
+        </div>
+    <?php endif; ?>
 
-        <tr>
-            <td colspan="4" class="text-end fw-bold">Grand Total:</td>
-            <td class="text-center fw-bold"><?php echo htmlspecialchars($selectedCurrency) . ' ' . number_format($grandTotal, 2); ?></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td colspan="6" class="text-end">
-                <a href="#" class="btn btn-success">Proceed to Payment</a>
-            </td>
-        </tr>
-    </tbody>
+
+    <tr>
+        <td colspan="4" class="text-end fw-bold">Grand Total:</td>
+        <td class="text-center fw-bold"><?php echo htmlspecialchars($selectedCurrency) . ' ' . number_format($grandTotal, 2); ?></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="6" class="text-end">
+            <a href="#" class="btn btn-success">Proceed to Payment</a>
+        </td>
+    </tr>
+</tbody>
 </table>
 
