@@ -23,9 +23,9 @@ if (!$access->grantAccess()) {
     <body>
         <!-- Navbar -->
         <div class="container-fluid p-0">
-            <nav class="navbar navbar-expand-lg bg-body-tertiary p-2" data-bs-theme="dark">
+            <nav class="navbar navbar-expand-lg bg-dark p-2" data-bs-theme="dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Logo</a>
+                    <a class="navbar-brand" href="#">Hup Hwa Furniture</a>
                     <nav class="navbar navbar-expand-lg">
                         <ul class="navbar-nav">
                             <li class="nav-item">

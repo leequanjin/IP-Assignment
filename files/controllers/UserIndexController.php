@@ -18,7 +18,7 @@ class UserIndexController {
         $search = $_GET['search'] ?? null;
         $selectedCategory = $_GET['category'] ?? null;
         $selectedCurrency = $_GET['currency'] ?? 'MYR';
-        
+
         $conversionRate = 1;
         if ($selectedCurrency !== 'MYR') {
             $conversionRate = $currencyConverter->getConversionRate($selectedCurrency);
@@ -46,6 +46,7 @@ class UserIndexController {
         $productTable = $procProducts->transformToXML($xmlProducts);
 
         $procCategories = new XSLTProcessor();
+        $procCategories->setParameter('', 'currency', $selectedCurrency);
         $procCategories->importStylesheet($xslCategories);
 
         $CategorySideBar = $procCategories->transformToXml($xmlCategories);
