@@ -15,8 +15,20 @@ if ($action === 'register') {
     $password = $_POST['password'];
     $role = 'staff';
 
-    if (!$email || !$password) {
-        $_SESSION['message'] = 'Invalid email or password.';
+    if (empty($name) || empty($age) || empty($gender) || empty($email) || empty($password)) {
+        $_SESSION['message'] = 'All fields are required.';
+    } elseif ($age <= 0) {
+        $_SESSION['message'] = 'Age must be a positive number.';
+    } elseif ($age >= 0) {
+        $_SESSION['message'] = 'Maximum age is 100.';
+    } elseif (!in_array($gender, ['Male', 'Female'])) {
+        $_SESSION['message'] = 'Invalid gender.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['message'] = 'Invalid email format.';
+    } elseif (strlen($password) < 6) {
+        $_SESSION['message'] = 'Password must be at least 6 characters.';
+    } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/', $password)) {
+        $_SESSION['message'] = 'Password must contain uppercase, lowercase, and a number.';
     } elseif (AdminModel::emailExists($email)) {
         $_SESSION['message'] = 'Email already registered.';
     } else {
@@ -44,7 +56,7 @@ if ($action === 'register') {
             $_SESSION['admin'] = (string) $admin->name;
             $_SESSION['email'] = (string) $admin->email;
             $_SESSION['role'] = 'staff'; // IMPORTANT
-            header('Location: ../views/admin_dashboard.php');
+            header('Location: ../adminIndex.php');
             exit();
         }
     }
