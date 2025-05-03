@@ -14,7 +14,7 @@ class UserIndexController {
         $currencyConverter = new CurrencyConverter();
 
         $search = $_GET['search'] ?? null;
-        $selectedCategory = $_GET['category'] ?? null;
+        $selectedCategory = $_GET['category'] ?? '';
         $selectedCurrency = $_GET['currency'] ?? 'MYR';
 
         $conversionRate = 1;

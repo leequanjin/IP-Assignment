@@ -125,4 +125,32 @@ class CartModel {
 
         $dom->save($this->xmlFile);
     }
+
+    public function updateCartQuantity($user_email, $product_id, $quantity) {
+        if (!file_exists($this->xmlFile)) {
+            return;
+        }
+
+        $dom = new DOMDocument();
+        $dom->load($this->xmlFile);
+        $carts = $dom->getElementsByTagName('cart');
+
+        foreach ($carts as $cart) {
+            $user_email = $cart->getElementsByTagName('userEmail')->item(0)->nodeValue;
+            if ($user_email == $user_email) {
+                $products = $cart->getElementsByTagName('product');
+                foreach ($products as $product) {
+                    $current_product_id = $product->getElementsByTagName('productId')->item(0)->nodeValue;
+                    if ($current_product_id == $product_id) {
+                        $qtyNode = $product->getElementsByTagName('productQty')->item(0);
+                        $qtyNode->nodeValue = $quantity;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        $dom->save($this->xmlFile);
+    }
 }

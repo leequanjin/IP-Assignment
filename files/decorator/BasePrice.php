@@ -1,5 +1,7 @@
 <?php
-interface PriceCalculator {
-    public function calculatePrice(float $price, int $qty): float;
+require_once 'PriceCalculator.php';
+class BasePrice implements PriceCalculator {
+    public function calculatePrice(float $price, int $qty): float {
+        return $price * $qty;
+    }
 }
-
