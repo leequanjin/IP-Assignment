@@ -22,9 +22,9 @@ class CartController {
             
             case 'add':
                 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["add_to_cart"])) {
-                    $user_id = 1;
+                    $user_email = $_SESSION['email'];
                     $product_id = $_GET["add_to_cart"];
-                    $this->model->addToCart($user_id, $product_id);
+                    $this->model->addToCart($user_email, $product_id);
                 }
                 
                 header("Location: userIndex.php?$currencyParam");
@@ -32,8 +32,8 @@ class CartController {
                 break;
 
             case 'view':
-                $user_id = 1;
-                $cartProducts = $this->model->getUserCart($user_id);
+                $user_email = $_SESSION['email'];
+                $cartProducts = $this->model->getUserCart($user_email);
 
                 $productModel = new ProductModel();
                 $cartProductDetails = [];
@@ -49,10 +49,10 @@ class CartController {
                 break;
 
             case 'delete':
-                $user_id = 1;
+                $user_email = $_SESSION['email'];
                 if (isset($_GET['product_id'])) {
                     $product_id = $_GET['product_id'];
-                    $this->model->removeFromCart($user_id, $product_id);
+                    $this->model->removeFromCart($user_email, $product_id);
                 }
                 header("Location: userIndex.php?module=cart&action=view$currencyParam");
                 exit;
