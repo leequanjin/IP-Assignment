@@ -1,8 +1,6 @@
-<?php
+<!-- Author     : Lee Quan Jin -->
 
-/*
- * @author leeda
- */
+<?php
 require_once 'models/CategoryModel.php';
 require_once 'models/ProductModel.php';
 require_once 'models/CartModel.php';

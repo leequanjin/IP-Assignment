@@ -1,12 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- Author     : Lee Quan Jin -->
 
-<!--
-    Document   : category_view.xsl
-    Created on : 3 May 2025, 11:16 pm
-    Author     : leeda
-    Description:
-        Purpose of transformation follows.
--->
+<?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" encoding="UTF-8" />

@@ -1,3 +1,5 @@
+<!-- Author     : Lee Quan Jin -->
+
 <?php
 
 class CategoryModel {

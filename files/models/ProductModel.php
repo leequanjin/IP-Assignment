@@ -1,3 +1,5 @@
+<!-- Author     : Lee Quan Jin -->
+
 <?php
 
 require_once '../product-observer/Subject.php';
