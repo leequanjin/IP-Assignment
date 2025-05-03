@@ -1,5 +1,8 @@
 <?php
 require_once 'controllers/CartController.php';
+require_once 'decorator/BasePrice.php';
+require_once 'decorator/DiscountDecorator.php';
+require_once 'apis/CurrencyConverter.php'; // If not already included
 ?>
 
 <table class="table table-bordered align-middle">
@@ -22,7 +25,13 @@ require_once 'controllers/CartController.php';
         if ($selectedCurrency !== 'MYR') {
             $conversionRate = $currencyConverter->getConversionRate($selectedCurrency);
         }
+
+        // Handle voucher discount
+        $voucher = $_GET['voucher'] ?? null;
+        $validVouchers = ['DISCOUNT10' => 0.10, 'DISCOUNT20' => 0.20, 'DISCOUNT50' => 0.50];
+        $discountRate = isset($validVouchers[$voucher]) ? $validVouchers[$voucher] : 0;
         ?>
+        
         <?php foreach ($cartProductDetails as $product): ?>
             <?php
             $id = $product['id'];
@@ -34,7 +43,13 @@ require_once 'controllers/CartController.php';
 
             $convertedPrice = $price * $conversionRate;
 
-            $subTotal = $qty * $convertedPrice;
+            // Apply base and discount decorators
+            $calculator = new BasePrice();
+            if ($discountRate > 0) {
+                $calculator = new DiscountDecorator($calculator, $discountRate);
+            }
+
+            $subTotal = $calculator->calculatePrice($convertedPrice, $qty);
             $grandTotal += $subTotal;
             ?>
             <tr>
@@ -56,6 +71,29 @@ require_once 'controllers/CartController.php';
                 </td>
             </tr>
         <?php endforeach; ?>
+
+        <!-- Voucher Form -->
+        <tr>
+            <td colspan="6">
+                <form method="GET" class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                    <input type="hidden" name="module" value="cart">
+                    <input type="hidden" name="action" value="view">
+                    <input type="hidden" name="currency" value="<?php echo htmlspecialchars($selectedCurrency); ?>">
+                    <input type="text" name="voucher" class="form-control w-25" placeholder="Enter Voucher Code" value="<?php echo isset($_GET['voucher']) ? htmlspecialchars($_GET['voucher']) : ''; ?>">
+                    <button type="submit" class="btn btn-outline-success">Apply Voucher</button>
+                </form>
+            </td>
+        </tr>
+
+        <?php if ($discountRate > 0): ?>
+            <tr>
+                <td colspan="6">
+                    <div class="alert alert-success text-center fw-bold">
+                        🎉 <?php echo $discountRate * 100; ?>% Discount Applied with Voucher: <?php echo htmlspecialchars($voucher); ?>
+                    </div>
+                </td>
+            </tr>
+        <?php endif; ?>
 
         <tr>
             <td colspan="4" class="text-end fw-bold">Grand Total:</td>
