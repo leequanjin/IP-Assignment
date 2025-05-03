@@ -53,8 +53,6 @@
                             <xsl:value-of select="$currency"/>
                             <xsl:text>&amp;add_to_cart=</xsl:text>
                             <xsl:value-of select="id"/>
-                            <xsl:text>&amp;category=</xsl:text>
-                            <xsl:value-of select="category"/>
                         </xsl:attribute>
                         Add to cart
                     </a>
