@@ -1,3 +1,18 @@
+<?php
+session_start();
+$message = $_SESSION['message'] ?? '';
+unset($_SESSION['message']);
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+</head>
+<body>
+
+<h2>Register Staff</h2>
+
 <form action="../controllers/AdminController.php" method="POST">
     <input type="hidden" name="action" value="register">
     Name: <input type="text" name="name"><br>
@@ -12,10 +27,17 @@
     <button type="submit">Register Admin</button>
 </form>
 
-<?php
-session_start();
-if (!empty($_SESSION['message'])) {
-    echo "<p style='color:red'>" . $_SESSION['message'] . "</p>";
-    unset($_SESSION['message']);
-}
-?>
+<?php if (!empty($message)): ?>
+    <p style="color: <?= strpos($message, 'successful') !== false ? 'green' : 'red' ?>;">
+        <?= $message ?>
+    </p>
+
+    <?php if (strpos($message, 'successful') !== false): ?>
+        <a href="admin_login_view.php">
+            <button style="padding: 10px 20px;">Proceed to Login</button>
+        </a>
+    <?php endif; ?>
+<?php endif; ?>
+
+</body>
+</html>    

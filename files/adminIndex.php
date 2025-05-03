@@ -2,11 +2,10 @@
 require_once 'proxy/AdminProxy.php';
 
 $access = new AdminProxy();
-if (!$access->grantAccess2()) {
+if (!$access->grantAccess()) {
     header('Location: views/admin_login_view.php');
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +29,7 @@ if (!$access->grantAccess2()) {
                     <nav class="navbar navbar-expand-lg">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link">Welcome guest</a>
+                                <a class="nav-link">Welcome <?php echo htmlspecialchars($_SESSION['admin']); ?></a>
                             </li>
                         </ul>
                     </nav>
@@ -51,8 +50,8 @@ if (!$access->grantAccess2()) {
                     <button class="btn btn-secondary"><a href="adminIndex.php?module=category&action=view" class="nav-link">View Categories</a></button>
                     <button class="btn btn-secondary"><a href="#" class="nav-link">All Orders</a></button>
                     <button class="btn btn-secondary"><a href="#" class="nav-link">All Payments</a></button>
-                    <button class="btn btn-secondary"><a href="#" class="nav-link">List Users</a></button>
-                    <button class="btn btn-secondary"><a href="#" class="nav-link">Logout</a></button>
+                    <button class="btn btn-secondary"><a href="views/list_users.php" class="nav-link">List Users</a></button>
+                    <button class="btn btn-secondary"><a href="views/admin_logout.php" class="nav-link">Logout</a></button>
                 </div>
             </div>  
         </div>
@@ -70,12 +69,14 @@ if (!$access->grantAccess2()) {
                 require_once 'controllers/ProductController.php';
                 $controller = new ProductController();
                 $controller->handleRequest($action);
+            } elseif ($module === 'user') {
+                include 'controllers/UserController.php'; // Executes immediately
             } else {
                 echo '<p class="text-center">Select an option above to continue.</p>';
             }
             ?>
         </div>
-        
+
 
         <!-- Footer -->
         <footer class="text-center text-white" style="background-color: #2B3035;">
