@@ -40,7 +40,14 @@ require_once 'controllers/CartController.php';
             <tr>
                 <td class="text-center"><?php echo htmlspecialchars($title); ?></td>
                 <td class="text-center"><img src="<?php echo $imageSrc; ?>" width="100" height="100"></td>
-                <td class="text-center"><?php echo $qty; ?></td>
+                <td class="text-center">
+                    <form action="userIndex.php?module=cart&action=update&currency=<?php echo urlencode($selectedCurrency); ?>" method="POST" class="d-flex justify-content-center align-items-center gap-2">
+                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($id); ?>">
+                        <input type="number" name="quantity" value="<?php echo htmlspecialchars($qty); ?>" min="1" class="form-control" style="width: 70px;">
+                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                    </form>
+                </td>
+
                 <td class="text-center"><?php echo htmlspecialchars($selectedCurrency) . ' ' . number_format($convertedPrice, 2); ?></td>
                 <td class="text-center"><?php echo htmlspecialchars($selectedCurrency) . ' ' . number_format($subTotal, 2); ?></td>
                 <td class="text-center">
@@ -57,9 +64,9 @@ require_once 'controllers/CartController.php';
         </tr>
         <tr>
             <td colspan="6" class="text-end">
-                <a href="#" class="btn btn-success">Proceed to Payment</a>
+                <a href="userIndex.php" class="btn btn-secondary">Continue Shopping</a>
+                <a href="userIndex.php?module=payment&action=view&currency=<?php echo urlencode($selectedCurrency); ?>&grand_total=<?php echo urlencode($grandTotal); ?>" class="btn btn-success">Proceed to Payment</a>
             </td>
         </tr>
     </tbody>
 </table>
-

@@ -1,4 +1,5 @@
 <?php
+
 require_once 'models/CartModel.php';
 require_once 'models/ProductModel.php';
 require_once 'apis/CurrencyConverter.php';
@@ -49,6 +50,17 @@ class CartController {
                 if (isset($_GET['product_id'])) {
                     $product_id = $_GET['product_id'];
                     $this->model->removeFromCart($user_email, $product_id);
+                }
+                echo "<script>window.location.href='userIndex.php?module=cart&action=view$currencyParam';</script>";
+                exit;
+                break;
+
+            case 'update':
+                if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['product_id'], $_POST['quantity'])) {
+                    $user_id = 1;
+                    $product_id = (int) $_POST['product_id'];
+                    $quantity = max(1, (int) $_POST['quantity']); // at least 1
+                    $this->model->updateCartQuantity($user_id, $product_id, $quantity);
                 }
                 echo "<script>window.location.href='userIndex.php?module=cart&action=view$currencyParam';</script>";
                 exit;
