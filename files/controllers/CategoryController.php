@@ -26,7 +26,15 @@ class CategoryController {
                 break;
 
             case 'view':
-                $categories = $this->model->getAllCategories();
+                $xml = new DOMDocument();
+                $xml->load('../xml-files/categories.xml');
+
+                $xsl = new DOMDocument();
+                $xsl->load('xslt/category_view.xsl');
+
+                $proc = new XSLTProcessor();
+                $proc->importStylesheet($xsl);
+                $categoryTable = $proc->transformToXml($xml);
 
                 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["delete_category"])) {
                     $titleToDelete = $_GET["delete_category"];
@@ -37,7 +45,7 @@ class CategoryController {
                 }
                 include 'views/view_category.php';
                 break;
-                
+
             default:
         }
     }

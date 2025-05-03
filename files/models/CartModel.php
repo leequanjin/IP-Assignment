@@ -13,7 +13,7 @@ class CartModel {
         $this->xmlFile = '../xml-files/carts.xml';
     }
 
-    public function addToCart($user_id, $product_id) {
+    public function addToCart($user_email, $product_id) {
         if (file_exists($this->xmlFile)) {
             $dom = new DOMDocument();
             $dom->preserveWhiteSpace = false;
@@ -31,8 +31,8 @@ class CartModel {
         $cartFound = false;
 
         foreach ($root->getElementsByTagName('cart') as $cart) {
-            $userId = $cart->getElementsByTagName('userId')->item(0)->nodeValue;
-            if ($userId == $user_id) {
+            $userEmail = $cart->getElementsByTagName('userEmail')->item(0)->nodeValue;
+            if ($userEmail == $user_email) {
                 $cartFound = true;
 
                 $productsNode = $cart->getElementsByTagName('products')->item(0);
@@ -64,7 +64,7 @@ class CartModel {
 
         if (!$cartFound) {
             $newCart = $dom->createElement('cart');
-            $userIdElement = $dom->createElement('userId', $user_id);
+            $userEmailElement = $dom->createElement('userEmail', $user_email);
             $products = $dom->createElement('products');
 
             $newProduct = $dom->createElement('product');
@@ -75,7 +75,7 @@ class CartModel {
 
             $products->appendChild($newProduct);
 
-            $newCart->appendChild($userIdElement);
+            $newCart->appendChild($userEmailElement);
             $newCart->appendChild($products);
             $root->appendChild($newCart);
         }
@@ -83,7 +83,7 @@ class CartModel {
         $dom->save($this->xmlFile);
     }
 
-    public function getUserCart($user_id) {
+    public function getUserCart($user_email) {
         $cartProducts = [];
 
         $dom = new DOMDocument();
@@ -91,8 +91,8 @@ class CartModel {
         $carts = $dom->getElementsByTagName('cart');
 
         foreach ($carts as $cart) {
-            $current_user_id = $cart->getElementsByTagName('userId')->item(0)->nodeValue;
-            if ($current_user_id == $user_id) {
+            $current_user_email = $cart->getElementsByTagName('userEmail')->item(0)->nodeValue;
+            if ($current_user_email == $user_email) {
                 $products = $cart->getElementsByTagName('product');
                 foreach ($products as $product) {
                     $productId = $product->getElementsByTagName('productId')->item(0)->nodeValue;
@@ -106,14 +106,14 @@ class CartModel {
         return $cartProducts;
     }
 
-    public function removeFromCart($user_id, $product_id) {
+    public function removeFromCart($user_email, $product_id) {
         $dom = new DOMDocument();
         $dom->load($this->xmlFile);
         $carts = $dom->getElementsByTagName('cart');
 
         foreach ($carts as $cart) {
-            $current_user_id = $cart->getElementsByTagName('userId')->item(0)->nodeValue;
-            if ($current_user_id == $user_id) {
+            $current_user_email = $cart->getElementsByTagName('userEmail')->item(0)->nodeValue;
+            if ($current_user_email == $user_email) {
                 $productsNode = $cart->getElementsByTagName('products')->item(0);
                 $products = $productsNode->getElementsByTagName('product');
 
