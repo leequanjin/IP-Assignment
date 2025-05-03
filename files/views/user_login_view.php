@@ -34,6 +34,7 @@ unset($_SESSION['error']);
     <a href="user_register_view.php">
         <button style="padding: 8px 15px;">Register</button>
     </a>
+    <p><a href="forgot_password_view.php">Forgot Password?</a></p>
 
     <hr>
     <h3>OR</h3>
