@@ -33,9 +33,6 @@ if (!$access->grantAccess2()) {
                                 <a class = "nav-link active" aria-current = "page" href = "userIndex.php">Home</a>
                             </li>
                             <li class = "nav-item">
-                                <a class = "nav-link" href = "#">Register</a>
-                            </li>
-                            <li class = "nav-item">
                                 <a class = "nav-link" href = "userIndex.php?module=cart&action=view">View Cart</a>
                             </li>
                         </ul>
