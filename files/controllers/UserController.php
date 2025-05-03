@@ -127,6 +127,73 @@ if ($action === 'register') {
 
     header('Location: ../views/edit_profile.php');
     exit();
+} elseif ($action === 'sendResetCode') {
+    $email = $_POST['email'];
+    $xml = simplexml_load_file('../../xml-files/users.xml');
+
+    $emailFound = false;
+
+    foreach ($xml->user as $user) {
+        if ((string)$user->email === $email) {
+            $emailFound = true;
+            $name = (string)$user->name;
+            $code = rand(100000, 999999);
+            $_SESSION['reset_code'] = $code;
+            $_SESSION['reset_email'] = $email;
+
+            sendVerificationCodeEmail($email, $name, $code);
+
+            header('Location: ../views/verify_code_view.php');
+            exit();
+        }
+    }
+    if (!$emailFound) {
+    $_SESSION['error'] = "Email not found.";
+    header('Location: ../views/forgot_password_view.php');
+    exit();
+    }
+} elseif ($action === 'verifyCode') {
+    $enteredCode = $_POST['code'];
+    if ($_SESSION['reset_code'] == $enteredCode) {
+        $_SESSION['verified'] = true;
+        header('Location: ../views/set_new_password_view.php');
+        exit();
+    } else {
+        $_SESSION['error'] = "Incorrect code.";
+        header('Location: ../views/verify_code_view.php');
+        exit();
+    }
+} elseif ($action === 'resetPassword') {
+    if (!$_SESSION['verified']) {
+        header('Location: ../views/forgot_password_view.php');
+        exit();
+    }
+
+    $newPassword = $_POST['password'];
+
+    if (strlen($newPassword) < 6 || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/', $newPassword)) {
+        $_SESSION['error'] = "Password must contain uppercase, lowercase, and a number.";
+        header('Location: ../views/set_new_password_view.php');
+        exit();
+    }
+
+    $email = $_SESSION['reset_email'];
+    $xml = simplexml_load_file('../../xml-files/users.xml');
+
+    foreach ($xml->user as $user) {
+        if ((string)$user->email === $email) {
+            $user->password = password_hash($newPassword, PASSWORD_DEFAULT);
+            break;
+        }
+    }
+
+    $xml->asXML('../../xml-files/users.xml');
+    session_destroy(); // Clear all reset session data
+    header('Location: ../views/user_login_view.php');
+    exit();
 }
+
+
+
 
 ?>
