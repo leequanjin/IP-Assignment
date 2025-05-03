@@ -1,3 +1,5 @@
+<!-- Author     : keekeshen -->
+
 <?php
 class User {
     public $name, $age, $gender, $email, $address, $password, $role;

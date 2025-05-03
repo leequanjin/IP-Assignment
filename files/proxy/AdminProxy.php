@@ -1,3 +1,5 @@
+<!-- Author     : keekeshen -->
+
 <?php
 require_once 'AccessInterface.php';
 
