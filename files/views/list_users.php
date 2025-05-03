@@ -3,7 +3,7 @@ $xml = new DOMDocument();
 $xml->load('../../xml-files/users.xml');
 
 $xsl = new DOMDocument();
-$xsl->load('../../xml-files/users.xsl');
+$xsl->load('../xslt/users.xsl');
 
 $proc = new XSLTProcessor();
 $proc->importStylesheet($xsl);
