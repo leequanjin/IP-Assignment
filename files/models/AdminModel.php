@@ -33,7 +33,7 @@ class AdminModel {
         $doc->save($xmlFile);
     }
 
-    public static function emailExists($email, $xmlFile = '../xml/admins.xml') {
+    public static function emailExists($email, $xmlFile = '../../xml-files/admins.xml') {
         if (!file_exists($xmlFile)) return false;
         $xml = simplexml_load_file($xmlFile);
         foreach ($xml->admin as $admin) {
