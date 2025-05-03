@@ -8,11 +8,11 @@
 
     <p>Please choose how you would like to log in:</p>
 
-    <a href="/views/user_login_view.php">
+    <a href="views/user_login_view.php">
         <button style="padding: 10px 20px;">Login as User</button>
     </a>
 
-    <a href="/views/admin_login_view.php">
+    <a href="views/admin_login_view.php">
         <button style="padding: 10px 20px; margin-left: 10px;">Login as Admin</button>
     </a>
 </body>
