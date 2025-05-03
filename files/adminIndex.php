@@ -1,3 +1,14 @@
+<?php
+require_once 'proxy/AdminProxy.php';
+
+$access = new AdminProxy();
+if (!$access->grantAccess2()) {
+    header('Location: views/admin_login_view.php');
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>

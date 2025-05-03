@@ -1,4 +1,12 @@
-<?php ?>
+<?php
+require_once 'proxy/UserProxy.php';
+
+$access = new UserProxy();
+if (!$access->grantAccess2()) {
+    header('Location: views/user_login_view.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
