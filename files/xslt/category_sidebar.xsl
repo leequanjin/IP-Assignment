@@ -29,6 +29,8 @@
                                     <xsl:attribute name="href">
                                         <xsl:text>userIndex.php?category=</xsl:text>
                                         <xsl:value-of select="title"/>
+                                        <xsl:text>&amp;currency=</xsl:text>
+                                        <xsl:value-of select="$currency"/>
                                     </xsl:attribute>
                                     <xsl:value-of select="title"/>
                                 </a>

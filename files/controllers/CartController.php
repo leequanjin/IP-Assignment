@@ -20,17 +20,16 @@ class CartController {
         $currencyParam = isset($_GET['currency']) ? '&currency=' . urlencode($_GET['currency']) : '';
 
         switch ($action) {
-            
+
             case 'add':
                 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["add_to_cart"])) {
                     $user_email = $_SESSION['email'];
                     $product_id = $_GET["add_to_cart"];
                     $this->model->addToCart($user_email, $product_id);
+
+                    echo "<script>window.location.href='userIndex.php?$categoryParam$currencyParam';</script>";
+                    exit;
                 }
-                
-                header("Location: userIndex.php?$categoryParam$currencyParam");
-                exit;
-                break;
 
             case 'view':
                 $user_email = $_SESSION['email'];
@@ -55,10 +54,10 @@ class CartController {
                     $product_id = $_GET['product_id'];
                     $this->model->removeFromCart($user_email, $product_id);
                 }
-                header("Location: userIndex.php?module=cart&action=view$currencyParam");
+                echo "<script>window.location.href='userIndex.php?module=cart&action=view$currencyParam';</script>";
                 exit;
                 break;
-                
+
             default:
         }
     }
