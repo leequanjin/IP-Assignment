@@ -6,6 +6,17 @@ if (!$access->grantAccess()) {
     header('Location: views/admin_login_view.php');
     exit();
 }
+
+$timeout_duration = 10;
+
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
+    session_unset();
+    session_destroy();
+    header("Location: views/admin_login_view.php?timeout=1");
+    exit();
+}
+
+$_SESSION['LAST_ACTIVITY'] = time();
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +27,7 @@ if (!$access->grantAccess()) {
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Admin Dashboard</title>
         <!-- bootstrap CSS link -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- CSS file link -->
         <link href="../style.css" rel="stylesheet">
     </head>
@@ -55,7 +66,6 @@ if (!$access->grantAccess()) {
                 </div>
             </div>  
         </div>
-        <!-- Navbar -->
 
         <div class="container my-5">
             <?php
@@ -70,27 +80,41 @@ if (!$access->grantAccess()) {
                 $controller = new ProductController();
                 $controller->handleRequest($action);
             } elseif ($module === 'user') {
-                include 'controllers/UserController.php'; // Executes immediately
+                include 'controllers/UserController.php';
             } else {
                 echo '<p class="text-center">Select an option above to continue.</p>';
             }
             ?>
         </div>
 
-
         <!-- Footer -->
         <footer class="text-center text-white" style="background-color: #2B3035;">
-            <!-- Copyright -->
             <div class="text-center p-3">
                 © 2025 Copyright: Hup Hwa Furniture Trading Sdn. Bhd
             </div>
-            <!-- Copyright -->
         </footer>
-        <!-- Footer -->
 
-        <!-- font awesome link -->
+        <!-- font awesome -->
         <script src="https://kit.fontawesome.com/67a319415d.js" crossorigin="anonymous"></script>
-        <!-- bootstrap JS link -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+        <!-- bootstrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+        <script>
+            let timeoutDuration = 10 * 60 * 1000;
+            let logoutTimer;
+
+            function resetLogoutTimer() {
+                clearTimeout(logoutTimer);
+                logoutTimer = setTimeout(() => {
+                    window.location.href = "views/admin_logout.php?timeout=1";
+                }, timeoutDuration);
+            }
+
+            window.onload = resetLogoutTimer;
+            document.onmousemove = resetLogoutTimer;
+            document.onkeypress = resetLogoutTimer;
+            document.onscroll = resetLogoutTimer;
+            document.onclick = resetLogoutTimer;
+        </script>
     </body>
 </html>
