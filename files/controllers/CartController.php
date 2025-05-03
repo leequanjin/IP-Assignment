@@ -16,6 +16,7 @@ class CartController {
     }
 
     public function handleRequest($action) {
+        $categoryParam = isset($_GET['category']) ? '&category=' . urlencode($_GET['category']) : '';
         $currencyParam = isset($_GET['currency']) ? '&currency=' . urlencode($_GET['currency']) : '';
 
         switch ($action) {
@@ -27,7 +28,7 @@ class CartController {
                     $this->model->addToCart($user_email, $product_id);
                 }
                 
-                header("Location: userIndex.php?$currencyParam");
+                header("Location: userIndex.php?$categoryParam$currencyParam");
                 exit;
                 break;
 

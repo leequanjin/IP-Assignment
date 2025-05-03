@@ -36,7 +36,15 @@ class ProductController {
                 break;
 
             case 'view':
-                $products = $this->model->getAllProducts();
+                $xml = new DOMDocument();
+                $xml->load('../xml-files/products.xml');
+
+                $xsl = new DOMDocument();
+                $xsl->load('xslt/staff_product_view.xsl');
+
+                $proc = new XSLTProcessor();
+                $proc->importStylesheet($xsl);
+                $productTableHtml = $proc->transformToXml($xml);
 
                 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["delete_product"])) {
                     $idToDelete = $_GET["delete_product"];
