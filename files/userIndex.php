@@ -50,8 +50,8 @@ if (!$access->grantAccess2()) {
                             ?>
                             <select class="form-select me-2" name="currency">
                                 <?php $selectedCurrency = $_GET['currency'] ?? 'MYR'; ?>
-                                <option value="MYR" <?php echo $selectedCurrency === 'MYR' ? 'selected' : ''; ?>>MYR</option>
-                                <option value="USD" <?php echo $selectedCurrency === 'USD' ? 'selected' : ''; ?>>USD</option>
+                                <option value="MYR" <?php echo $selectedCurrency == 'MYR' ? 'selected' : ''; ?>>MYR</option>
+                                <option value="USD" <?php echo $selectedCurrency == 'USD' ? 'selected' : ''; ?>>USD</option>
                             </select>
                             <button class="btn btn-outline-secondary" type="submit">Change</button>
                         </form>
