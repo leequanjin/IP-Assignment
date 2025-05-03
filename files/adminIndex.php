@@ -64,6 +64,7 @@
             }
             ?>
         </div>
+        
 
         <!-- Footer -->
         <footer class="text-center text-white" style="background-color: #2B3035;">
