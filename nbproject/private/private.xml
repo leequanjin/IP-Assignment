@@ -3,20 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/user-management-area/controllers/AdminController.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/admin-area/index.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/xml-files/carts.xml</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/controllers/CartController.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/userIndex.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/controllers/UserIndexController.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/models/CartModel.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/models/CategoryModel.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/proxy/AdminProxy.php</file>
             <file>file:/C:/xampp/htdocs/IP-Assignment/files/adminIndex.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/models/ProductModel.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/user_home.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/user_cart.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/files/controllers/CategoryController.php</file>
-            <file>file:/C:/xampp/htdocs/IP-Assignment/.gitignore</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/xml-files/users.xml</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/controllers/AdminController.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/user_profile_view.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/edit_product.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/insert_category.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/userIndex.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/edit_profile.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/apis/google_oauth.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/apis/user_mail_service.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/user_login_view.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/models/UserModel.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/controllers/UserController.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/models/AdminModel.php</file>
+            <file>file:/C:/xampp/htdocs/IP-Assignment/files/views/user_register_view.php</file>
         </group>
     </open-files>
 </project-private>
