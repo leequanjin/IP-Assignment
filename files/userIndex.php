@@ -1,4 +1,12 @@
-<?php ?>
+<?php
+require_once 'proxy/UserProxy.php';
+
+$access = new UserProxy();
+if (!$access->grantAccess2()) {
+    header('Location: views/user_login_view.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,9 +31,6 @@
                         <ul class = "navbar-nav me-auto my-2 my-lg-0">
                             <li class = "nav-item">
                                 <a class = "nav-link active" aria-current = "page" href = "userIndex.php">Home</a>
-                            </li>
-                            <li class = "nav-item">
-                                <a class = "nav-link" href = "#">Register</a>
                             </li>
                             <li class = "nav-item">
                                 <a class = "nav-link" href = "userIndex.php?module=cart&action=view">View Cart</a>
