@@ -1,3 +1,5 @@
+<!-- Author     : Lee Quan Jin -->
+
 <?php
 interface Subject {
     public function registerObserver(Observer $o);

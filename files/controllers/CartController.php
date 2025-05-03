@@ -1,8 +1,4 @@
 <?php
-
-/*
- * @author leeda
- */
 require_once 'models/CartModel.php';
 require_once 'models/ProductModel.php';
 require_once 'apis/CurrencyConverter.php';

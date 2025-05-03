@@ -1,10 +1,5 @@
 <?php
 
-/*
- *
- * @author leeda
- */
-
 class CartModel {
 
     private $xmlFile;
