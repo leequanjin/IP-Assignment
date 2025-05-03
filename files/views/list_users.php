@@ -1,3 +1,4 @@
+<!-- Author     : keekeshen -->
 <?php
 $xml = new DOMDocument();
 $xml->load('../../xml-files/users.xml');
