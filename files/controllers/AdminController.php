@@ -1,3 +1,5 @@
+<!-- Author     : keekeshen -->
+
 <?php
 
 require_once '../models/AdminModel.php';
@@ -19,7 +21,7 @@ if ($action === 'register') {
         $_SESSION['message'] = 'All fields are required.';
     } elseif ($age <= 0) {
         $_SESSION['message'] = 'Age must be a positive number.';
-    } elseif ($age >= 0) {
+    } elseif ($age >= 100) {
         $_SESSION['message'] = 'Maximum age is 100.';
     } elseif (!in_array($gender, ['Male', 'Female'])) {
         $_SESSION['message'] = 'Invalid gender.';

@@ -1,3 +1,4 @@
+<!-- Author     : keekeshen -->
 <?php
 session_start();
 session_destroy(); // clears all session data

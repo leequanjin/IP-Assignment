@@ -1,3 +1,5 @@
+<!-- Author     : keekeshen -->
+
 <?php
 class AdminModel {
     public $name, $age, $gender, $email, $password, $role;
