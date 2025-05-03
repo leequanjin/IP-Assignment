@@ -11,7 +11,6 @@ $apiKey = '';
 $grandTotal = (float) $_POST['grand_total'];
 $currency = $_POST['currency'] ?? 'usd';
 
-// Convert to cents (e.g., 20.00 USD → 2000)
 $amountInCents = intval(round($grandTotal * 100));
 
 $data = http_build_query([
