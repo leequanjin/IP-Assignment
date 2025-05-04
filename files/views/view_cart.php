@@ -89,7 +89,7 @@ require_once 'apis/CurrencyConverter.php'; // If not already included
             <tr>
                 <td colspan="6">
                     <div class="alert alert-success text-center fw-bold">
-                        🎉 <?php echo $discountRate * 100; ?>% Discount Applied with Voucher: <?php echo htmlspecialchars($voucher); ?>
+                        <?php echo $discountRate * 100; ?>% Discount Applied with Voucher: <?php echo htmlspecialchars($voucher); ?>
                     </div>
                 </td>
             </tr>
