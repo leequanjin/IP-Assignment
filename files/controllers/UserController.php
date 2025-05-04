@@ -35,16 +35,15 @@ if ($action === 'register') {
     } elseif (User::emailExists($email)) {
         $_SESSION['message'] = 'Email already registered.';
     } else {
-        $user = new User($name, $age, $gender, $email, $address, $password, $role);
-        $user->saveToXML();
+        // All valid — generate code, store data in session, and email code
+        $code = rand(100000, 999999);
+        $_SESSION['register_code'] = $code;
+        $_SESSION['register_data'] = compact('name', 'age', 'gender', 'email', 'address', 'password', 'role');
 
-        $mailSent = sendConfirmationEmail($email, $name);
+        sendVerificationCodeEmail2($email, $name, $code);
 
-        if ($mailSent) {
-            $_SESSION['message'] = 'Registration successful.';
-        } else {
-            $_SESSION['message'] = 'Registered, but failed to send welcome email.';
-        }
+        header('Location: ../views/verify_register_code_view.php');
+        exit();
     }
 
     header('Location: ../views/user_register_view.php');
@@ -191,9 +190,36 @@ if ($action === 'register') {
     session_destroy(); // Clear all reset session data
     header('Location: ../views/user_login_view.php');
     exit();
+} elseif ($action === 'verifyRegisterCode') {
+    $enteredCode = $_POST['code'];
+
+    if ($_SESSION['register_code'] == $enteredCode) {
+        $data = $_SESSION['register_data'];
+        $user = new User(
+            $data['name'],
+            $data['age'],
+            $data['gender'],
+            $data['email'],
+            $data['address'],
+            $data['password'],
+            $data['role']
+        );
+        $user->saveToXML();
+
+        sendConfirmationEmail($data['email'], $data['name']);
+
+        $_SESSION['message'] = 'Registration successful.';
+        unset($_SESSION['register_code'], $_SESSION['register_data']);
+        header('Location: ../views/user_register_view.php');
+        exit();
+    } else {
+        $_SESSION['error'] = 'Incorrect verification code.';
+        header('Location: ../views/verify_register_code_view.php');
+        exit();
+    }
+
+
+
+
 }
-
-
-
-
 ?>
