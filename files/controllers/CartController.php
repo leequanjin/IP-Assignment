@@ -47,6 +47,34 @@ class CartController {
                 include 'views/view_cart.php';
                 break;
 
+            case 'viewCart':
+
+                // Define relative paths
+                $xmlPath = '../xml-files/carts.xml'; // Going up one directory from views to xml-files
+                $xslPath = 'xslt/cart_report.xsl'; // Going up one directory from views to xslt
+                // Create new DOMDocument instance and load XML
+                $xml = new DOMDocument();
+                if (!$xml->load($xmlPath)) {
+                    echo "Failed to load XML file.";
+                    exit;
+                }
+
+                // Load XSLT
+                $xsl = new DOMDocument();
+                if (!$xsl->load($xslPath)) {
+                    echo "Failed to load XSL file.";
+                    exit;
+                }
+
+                // Configure XSLT processor
+                $proc = new XSLTProcessor();
+                $proc->importStyleSheet($xsl); // Attach the XSL stylesheet
+                // Output transformed HTML
+                $transform = $proc->transformToXML($xml);
+                
+                include 'views/view_cart_report.php';
+                break;
+
             case 'delete':
                 $user_email = $_SESSION['email'];
                 if (isset($_GET['product_id'])) {

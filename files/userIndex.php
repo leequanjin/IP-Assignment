@@ -61,6 +61,9 @@ session_start();
                             <li class = "nav-item">
                                 <a class = "nav-link" href = "userIndex.php?module=cart&action=view">View Cart</a>
                             </li>
+                            <li class = "nav-item">
+                                <a class = "nav-link" href = "userIndex.php?module=cart&action=viewCart">View Cart Report</a>
+                            </li>
                         </ul>
                         <form class="d-flex" role="search" method="GET" action="userIndex.php">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
