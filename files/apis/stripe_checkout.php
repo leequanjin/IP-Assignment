@@ -1,27 +1,30 @@
 <?php
-
-// create_stripe_session.php
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die('Invalid request method.');
 }
-//add api key here
+
 $apiKey = '';
-
-$grandTotal = (float) $_POST['grand_total'];
 $currency = $_POST['currency'] ?? 'usd';
+$grandTotal = (float) $_POST['grand_total']; // Already discounted
 
-$amountInCents = intval(round($grandTotal * 100));
+if ($grandTotal <= 0) {
+    die('Invalid total amount.');
+}
 
-$data = http_build_query([
-    'success_url' => 'http://localhost/IP-Assignment/files/userIndex.php',
-    'cancel_url' => 'http://localhost/IP-Assignment/files/views/admin_login_view.php',
+$unitAmount = intval($grandTotal * 100); // Convert to cents
+
+// Prepare flat POST data
+$postData = [
+    'success_url' => 'http://localhost/IP-Assignment/files/views/view_success.php',
+    'cancel_url' => 'http://localhost/IP-Assignment/files/views/view_cancel.php',
     'mode' => 'payment',
     'line_items[0][price_data][currency]' => $currency,
-    'line_items[0][price_data][product_data][name]' => 'Cart Checkout',
-    'line_items[0][price_data][unit_amount]' => $amountInCents,
-    'line_items[0][quantity]' => 1
-        ]);
+    'line_items[0][price_data][product_data][name]' => 'Cart Purchase',
+    'line_items[0][price_data][unit_amount]' => $unitAmount,
+    'line_items[0][quantity]' => 1,
+];
+
+$data = http_build_query($postData);
 
 $headers = [
     "Authorization: Bearer $apiKey",
@@ -34,13 +37,12 @@ $context = stream_context_create([
         'header' => implode("\r\n", $headers),
         'content' => $data
     ]
-        ]);
+]);
 
 $response = file_get_contents('https://api.stripe.com/v1/checkout/sessions', false, $context);
 
 if ($response !== false) {
     $result = json_decode($response, true);
-
     if (isset($result['url'])) {
         header('Location: ' . $result['url']);
         exit();
