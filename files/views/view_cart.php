@@ -31,7 +31,7 @@ require_once 'apis/CurrencyConverter.php'; // If not already included
         $validVouchers = ['DISCOUNT10' => 0.10, 'DISCOUNT20' => 0.20, 'DISCOUNT50' => 0.50];
         $discountRate = isset($validVouchers[$voucher]) ? $validVouchers[$voucher] : 0;
         ?>
-        
+
         <?php foreach ($cartProductDetails as $product): ?>
             <?php
             $id = $product['id'];
@@ -103,7 +103,11 @@ require_once 'apis/CurrencyConverter.php'; // If not already included
         <tr>
             <td colspan="6" class="text-end">
                 <a href="userIndex.php" class="btn btn-secondary">Continue Shopping</a>
-                <a href="userIndex.php?module=payment&action=view&currency=<?php echo urlencode($selectedCurrency); ?>&grand_total=<?php echo urlencode($grandTotal); ?>" class="btn btn-success">Proceed to Payment</a>
+                <form action="apis/stripe_checkout.php" method="POST" class="d-inline">
+                    <input type="hidden" name="currency" value="<?php echo htmlspecialchars($selectedCurrency); ?>">
+                    <input type="hidden" name="grand_total" value="<?php echo htmlspecialchars($grandTotal); ?>">
+                    <button type="submit" class="btn btn-success">Proceed to Payment</button>
+                </form>
             </td>
         </tr>
     </tbody>
