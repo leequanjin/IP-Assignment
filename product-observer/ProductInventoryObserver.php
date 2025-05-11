@@ -5,8 +5,8 @@
 class ProductInventoryObserver implements Observer {
 
     private Subject $productSubject;
-    private array $oldData;
-    private array $newData;
+    private Product $oldData;
+    private Product $newData;
     private string $action;
     private int $stockThreshold = 10;
 
@@ -15,7 +15,7 @@ class ProductInventoryObserver implements Observer {
         $this->productSubject->registerObserver($this);
     }
 
-    public function update(array $oldData, array $newData, string $action) {
+    public function update(Product $oldData, Product $newData, string $action) {
         $this->oldData = $oldData;
         $this->newData = $newData;
         $this->action = $action;
@@ -24,10 +24,10 @@ class ProductInventoryObserver implements Observer {
     }
 
     public function mail() {
-        if ($this->newData['stock'] < $this->stockThreshold) {
+        if ($this->newData->stock < $this->stockThreshold) {
             mail('leeqj-wp22@student.tarc.edu.my', 'Low Stock Alert', 'Product ID: '
-                    . $this->oldData['id'] . ' - ' . $this->oldData['title'] . ' currently only has '
-                    . $this->newData['stock'] . ' stock remaining!', "From:leedannyqj@gmail.com");
+                    . $this->oldData->id . ' - ' . $this->oldData->title . ' currently only has '
+                    . $this->newData->stock . ' stock remaining!', "From:leedannyqj@gmail.com");
         }
     }
 }

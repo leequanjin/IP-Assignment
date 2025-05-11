@@ -33,7 +33,7 @@ class CartController {
                 }
 
             case 'view':
-                $user_email = $_SESSION['email'];
+                $user_email = $_SESSION['email'] ?? '';
                 $cartProducts = $this->model->getUserCart($user_email);
 
                 $productModel = new ProductModel();
@@ -41,8 +41,8 @@ class CartController {
 
                 foreach ($cartProducts as $productId => $qty) {
                     $productData = $productModel->getProductData($productId);
-                    if (!empty($productData['title'])) {
-                        $productData['qty'] = $qty;
+                    if (!empty($productData->title)) {
+                        $productData->qty = $qty;
                         $cartProductDetails[] = $productData;
                     }
                 }
