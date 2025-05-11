@@ -16,6 +16,7 @@ class UserIndexController {
         $search = $_GET['search'] ?? null;
         $selectedCategory = $_GET['category'] ?? '';
         $selectedCurrency = $_GET['currency'] ?? 'MYR';
+        $loggedIn = isset($_SESSION['user']) ? 'true' : 'false';
 
         $conversionRate = 1;
         if ($selectedCurrency !== 'MYR') {
@@ -40,6 +41,7 @@ class UserIndexController {
         $procProducts->setParameter('', 'conversionRate', $conversionRate);
         $procProducts->setParameter('', 'search', $search ?? '');
         $procProducts->setParameter('', 'category', $selectedCategory ?? '');
+        $procProducts->setParameter('', 'loggedIn', $loggedIn);
 
         $productTable = $procProducts->transformToXML($xmlProducts);
 

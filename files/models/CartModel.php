@@ -1,3 +1,5 @@
+<!-- Author     : Christopher Yap Jian Xing -->
+
 <?php
 
 class CartModel {
