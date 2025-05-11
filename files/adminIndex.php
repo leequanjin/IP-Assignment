@@ -9,7 +9,7 @@ if (!$access->grantAccess()) {
     exit();
 }
 
-$timeout_duration = 600;
+$timeout_duration = 10;
 
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
     session_unset();
@@ -61,8 +61,6 @@ $_SESSION['LAST_ACTIVITY'] = time();
                     <button class="btn btn-secondary"><a href="adminIndex.php?module=product&action=view" class="nav-link">View Product</a></button>
                     <button class="btn btn-secondary"><a href="adminIndex.php?module=category&action=insert" class="nav-link">Insert Categories</a></button>
                     <button class="btn btn-secondary"><a href="adminIndex.php?module=category&action=view" class="nav-link">View Categories</a></button>
-                    <button class="btn btn-secondary"><a href="#" class="nav-link">All Orders</a></button>
-                    <button class="btn btn-secondary"><a href="#" class="nav-link">All Payments</a></button>
                     <button class="btn btn-secondary"><a href="views/list_users.php" class="nav-link">List Users</a></button>
                     <button class="btn btn-secondary"><a href="views/admin_logout.php" class="nav-link">Logout</a></button>
                 </div>

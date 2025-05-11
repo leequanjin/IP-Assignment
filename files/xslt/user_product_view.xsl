@@ -6,6 +6,7 @@
 
     <xsl:param name="currency" select="'MYR'" />
     <xsl:param name="conversionRate" select="1" />
+    <xsl:param name="loggedIn" />
 
     <xsl:output method="html" encoding="UTF-8" indent="yes" />
 
@@ -49,11 +50,17 @@
                     </p>
                     <a class="btn btn-secondary">
                         <xsl:attribute name="href">
-                            <xsl:text>userIndex.php?module=cart&amp;action=add&amp;currency=</xsl:text>
-                            <xsl:value-of select="$currency"/>
-                            <xsl:text>&amp;add_to_cart=</xsl:text>
-                            <xsl:value-of select="id"/>
+                            <xsl:if test="$loggedIn = 'true'">
+                                <xsl:text>userIndex.php?module=cart&amp;action=add&amp;currency=</xsl:text>
+                                <xsl:value-of select="$currency"/>
+                                <xsl:text>&amp;add_to_cart=</xsl:text>
+                                <xsl:value-of select="id"/>
+                            </xsl:if>
                         </xsl:attribute>
+                        <xsl:if test="$loggedIn = 'false'">
+                            <xsl:attribute name="class">btn btn-secondary disabled</xsl:attribute>
+                            <xsl:attribute name="onclick">return false;</xsl:attribute>
+                        </xsl:if>
                         Add to cart
                     </a>
                 </div>

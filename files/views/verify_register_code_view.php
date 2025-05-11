@@ -1,3 +1,5 @@
+<!-- Author     : keekeshen -->
+
 <?php
 session_start();
 $error = $_SESSION['error'] ?? '';
