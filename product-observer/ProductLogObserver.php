@@ -5,8 +5,8 @@
 class ProductLogObserver implements Observer {
 
     private Subject $productSubject;
-    private array $oldData;
-    private array $newData;
+    private Product $oldData;
+    private Product $newData;
     private string $action;
 
     public function __construct(Subject $productSubject) {
@@ -14,7 +14,7 @@ class ProductLogObserver implements Observer {
         $this->productSubject->registerObserver($this);
     }
 
-    public function update(array $oldData, array $newData, string $action) {
+    public function update(Product $oldData, Product $newData, string $action) {
         $this->oldData = $oldData;
         $this->newData = $newData;
         $this->action = $action;
@@ -25,26 +25,26 @@ class ProductLogObserver implements Observer {
     public function log() {
         $logMessage = '[' . date('Y-m-d H:i:s') . '] ' .
                 'Action: ' . $this->action . ', ' .
-                'Product ID: ' . $this->oldData['id'] . ', ' .
-                'Title: ' . $this->oldData['title'] . ', ';
+                'Product ID: ' . $this->oldData->id . ', ' .
+                'Title: ' . $this->oldData->title . ', ';
 
-        if ($this->oldData['title'] !== $this->newData['title']) {
-            $logMessage .= 'Title changed from: ' . $this->oldData['title'] . ' to ' . $this->newData['title'] . ', ';
+        if ($this->oldData->title !== $this->newData->title) {
+            $logMessage .= 'Title changed from: ' . $this->oldData->title . ' to ' . $this->newData->title . ', ';
         }
-        if ($this->oldData['description'] !== html_entity_decode($this->newData['description'])) {
-            $logMessage .= 'Description changed from: ' . $this->oldData['description'] . ' to ' . $this->newData['description'] . ', ';
+        if ($this->oldData->description !== html_entity_decode($this->newData->description)) {
+            $logMessage .= 'Description changed from: ' . $this->oldData->description . ' to ' . $this->newData->description . ', ';
         }
-        if ($this->oldData['category'] !== html_entity_decode($this->newData['category'])) {
-            $logMessage .= 'Category changed from: ' . $this->oldData['category'] . ' to ' . $this->newData['category'] . ', ';
+        if ($this->oldData->category !== html_entity_decode($this->newData->category)) {
+            $logMessage .= 'Category changed from: ' . $this->oldData->category . ' to ' . $this->newData->category . ', ';
         }
-        if ($this->oldData['price'] !== $this->newData['price']) {
-            $logMessage .= 'Price changed from: ' . $this->oldData['price'] . ' to ' . $this->newData['price'] . ', ';
+        if ($this->oldData->price !== $this->newData->price) {
+            $logMessage .= 'Price changed from: ' . $this->oldData->price . ' to ' . $this->newData->price . ', ';
         }
-        if ($this->oldData['stock'] !== $this->newData['stock']) {
-            $logMessage .= 'Stock changed from: ' . $this->oldData['stock'] . ' to ' . $this->newData['stock'] . ', ';
+        if ($this->oldData->stock !== $this->newData->stock) {
+            $logMessage .= 'Stock changed from: ' . $this->oldData->stock . ' to ' . $this->newData->stock . ', ';
         }
-        if ($this->oldData['image'] !== $this->newData['image']) {
-            $logMessage .= 'Imagechanged from: ' . $this->oldData['image'] . ' to ' . $this->newData['image'] . ', ';
+        if ($this->oldData->image !== $this->newData->image) {
+            $logMessage .= 'Imagechanged from: ' . $this->oldData->image . ' to ' . $this->newData->image . ', ';
         }
 
         $logMessage = rtrim($logMessage, ', ') . PHP_EOL;

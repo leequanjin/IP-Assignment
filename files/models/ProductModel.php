@@ -1,13 +1,13 @@
 <!-- Author     : Lee Quan Jin -->
 
 <?php
-
 require_once '../product-observer/Subject.php';
 require_once '../product-observer/ProductSubject.php';
 require_once '../product-observer/Observer.php';
 require_once '../product-observer/ProductInventoryObserver.php';
 require_once '../product-observer/ProductLogObserver.php';
 require_once '../product-observer/ProductPriceChangeObserver.php';
+require_once 'Product.php';
 
 class ProductModel {
 
@@ -23,52 +23,52 @@ class ProductModel {
         return $dom->getElementsByTagName('product');
     }
 
-    public function insertProduct($product_title, $product_desc, $product_category, $product_image, $product_price, $product_stock) {
+    public function insertProduct(Product $newProduct) {
         $productTitleError = $productDescError = $productCategoryError = $productImageError = $productPriceError = $productStockError = '';
         $successMessage = '';
 
         $hasError = false;
 
-        if (!$product_title) {
+        if (!$newProduct->title) {
             $productTitleError = "Please enter a product title.";
             $hasError = true;
         }
-        if (!$product_desc) {
+        if (!$newProduct->description) {
             $productDescError = "Please enter a product description.";
             $hasError = true;
         }
-        if (!$product_category || $product_category == "Choose...") {
+        if (!$newProduct->category || $newProduct->category == "Choose...") {
             $productCategoryError = "Please select a category.";
             $hasError = true;
         }
-        if (!$product_price) {
+        if (!$newProduct->price) {
             $productPriceError = "Please enter a product price.";
             $hasError = true;
-        } elseif (!is_numeric($product_price) || $product_price < 0) {
+        } elseif (!is_numeric($newProduct->price) || $newProduct->price < 0) {
             $productPriceError = "Please enter a valid positive number.";
             $hasError = true;
         }
-        if (!$product_stock) {
+        if (!$newProduct->stock) {
             $productStockError = "Please enter available stock.";
             $hasError = true;
         }
-        if (!$product_image || $product_image['error'] !== UPLOAD_ERR_OK) {
+        if (!$newProduct->image || $newProduct->image['error'] !== UPLOAD_ERR_OK) {
             $productImageError = "Please upload a product image.";
             $hasError = true;
         } else {
-            $fileExtension = strtolower(pathinfo($product_image['name'], PATHINFO_EXTENSION));
+            $fileExtension = strtolower(pathinfo($newProduct->image['name'], PATHINFO_EXTENSION));
             if ($fileExtension !== 'png') {
                 $productImageError = "Only PNG extension files are allowed.";
                 $hasError = true;
             }
 
-            $mimeType = mime_content_type($product_image['tmp_name']);
+            $mimeType = mime_content_type($newProduct->image['tmp_name']);
             if ($mimeType !== 'image/png') {
                 $productImageError = "Only PNG MIME type files are allowed.";
                 $hasError = true;
             }
 
-            $imageInfo = getimagesize($product_image['tmp_name']);
+            $imageInfo = getimagesize($newProduct->image['tmp_name']);
             if ($imageInfo === false) {
                 $productImageError = "Uploaded file is not a valid image.";
                 $hasError = true;
@@ -80,7 +80,7 @@ class ProductModel {
             $newFileName = time() . "_" . bin2hex(random_bytes(5)) . '.' . $fileExtension;
             $uploadPath = 'uploads/' . $newFileName;
 
-            if (!move_uploaded_file($product_image['tmp_name'], $uploadPath)) {
+            if (!move_uploaded_file($newProduct->image['tmp_name'], $uploadPath)) {
                 $productImageError = "Error uploading the image.";
                 $hasError = true;
             } else {
@@ -114,25 +114,25 @@ class ProductModel {
                     $product_id = 1;
                 }
 
-                $newProduct = $dom->createElement('product');
+                $newProductElement = $dom->createElement('product');
 
                 $idElement = $dom->createElement('id', $product_id);
-                $titleElement = $dom->createElement('title', $product_title);
-                $descElement = $dom->createElement('description', $product_desc);
-                $categoryElement = $dom->createElement('category', $product_category);
-                $priceElement = $dom->createElement('price', $product_price);
-                $stockElement = $dom->createElement('stock', $product_stock);
+                $titleElement = $dom->createElement('title', $newProduct->title);
+                $descElement = $dom->createElement('description', $newProduct->description);
+                $categoryElement = $dom->createElement('category', $newProduct->category);
+                $priceElement = $dom->createElement('price', $newProduct->price);
+                $stockElement = $dom->createElement('stock', $newProduct->stock);
                 $imageElement = $dom->createElement('image', $imageFileName);
 
-                $newProduct->appendChild($idElement);
-                $newProduct->appendChild($titleElement);
-                $newProduct->appendChild($descElement);
-                $newProduct->appendChild($categoryElement);
-                $newProduct->appendChild($priceElement);
-                $newProduct->appendChild($stockElement);
-                $newProduct->appendChild($imageElement);
+                $newProductElement->appendChild($idElement);
+                $newProductElement->appendChild($titleElement);
+                $newProductElement->appendChild($descElement);
+                $newProductElement->appendChild($categoryElement);
+                $newProductElement->appendChild($priceElement);
+                $newProductElement->appendChild($stockElement);
+                $newProductElement->appendChild($imageElement);
 
-                $root->appendChild($newProduct);
+                $root->appendChild($newProductElement);
                 $dom->save($this->xmlFile);
 
                 $successMessage = "Product has been inserted successfully!";
@@ -143,16 +143,6 @@ class ProductModel {
     }
 
     public function getProductData($id) {
-        $productData = [
-            'id' => $id,
-            'title' => '',
-            'desc' => '',
-            'category' => '',
-            'price' => '',
-            'stock' => '',
-            'image' => ''
-        ];
-
         $dom = new DOMDocument();
         $dom->load($this->xmlFile);
         $products = $dom->getElementsByTagName('product');
@@ -160,60 +150,62 @@ class ProductModel {
         foreach ($products as $product) {
             $current_id = $product->getElementsByTagName('id')->item(0)->nodeValue;
             if ($current_id == $id) {
-                $productData['title'] = $product->getElementsByTagName('title')->item(0)->nodeValue;
-                $productData['desc'] = $product->getElementsByTagName('description')->item(0)->nodeValue;
-                $productData['category'] = $product->getElementsByTagName('category')->item(0)->nodeValue;
-                $productData['price'] = $product->getElementsByTagName('price')->item(0)->nodeValue;
-                $productData['stock'] = $product->getElementsByTagName('stock')->item(0)->nodeValue;
-                $productData['image'] = $product->getElementsByTagName('image')->item(0)->nodeValue;
-                break;
+                $title = $product->getElementsByTagName('title')->item(0)->nodeValue;
+                $description = $product->getElementsByTagName('description')->item(0)->nodeValue;
+                $category = $product->getElementsByTagName('category')->item(0)->nodeValue;
+                $price = $product->getElementsByTagName('price')->item(0)->nodeValue;
+                $stock = $product->getElementsByTagName('stock')->item(0)->nodeValue;
+                $image = $product->getElementsByTagName('image')->item(0)->nodeValue;
+
+                return new Product($id, $title, $description, $category, $price, $stock, $image);
             }
         }
-        return $productData;
+
+        return null;
     }
 
-    public function editProduct($idToEdit, $product_title, $product_desc, $product_category, $product_image, $product_price, $product_stock) {
+    public function editProduct(Product $editedProduct, $idToEdit) {
         $productTitleError = $productDescError = $productCategoryError = $productImageError = $productPriceError = $productStockError = '';
 
         $hasError = false;
 
-        if (empty($product_title)) {
+        if (empty($editedProduct->title)) {
             $productTitleError = "Please enter a product title.";
             $hasError = true;
         }
-        if (empty($product_desc)) {
+        if (empty($editedProduct->description)) {
             $productDescError = "Please enter a product description.";
             $hasError = true;
         }
-        if (empty($product_category) || $product_category == "Choose...") {
+        if (empty($editedProduct->category) || $editedProduct->category == "Choose...") {
             $productCategoryError = "Please select a category.";
             $hasError = true;
         }
-        if (empty($product_price)) {
+        if (empty($editedProduct->price)) {
             $productPriceError = "Please enter a product price.";
             $hasError = true;
-        } elseif (!is_numeric($product_price) || $product_price < 0) {
+        } elseif (!is_numeric($editedProduct->price) || $editedProduct->price < 0) {
             $productPriceError = "Please enter a valid positive number.";
             $hasError = true;
         }
-        if (!$product_stock) {
+        if (!$editedProduct->stock) {
             $productStockError = "Please enter available stock.";
             $hasError = true;
         }
-        if ($product_image && $product_image['error'] === UPLOAD_ERR_OK) {
-            $fileExtension = strtolower(pathinfo($product_image['name'], PATHINFO_EXTENSION));
+        if ($editedProduct->image && $editedProduct->image['error'] === UPLOAD_ERR_OK) {
+            $fileExtension = strtolower(pathinfo($editedProduct->image['name'], PATHINFO_EXTENSION));
             if ($fileExtension !== 'png') {
                 $productImageError = "Only PNG files are allowed.";
                 $hasError = true;
             }
 
-            $mimeType = mime_content_type($product_image['tmp_name']);
+            $mimeType = mime_content_type($editedProduct->image['tmp_name']);
             if ($mimeType !== 'image/png') {
                 $productImageError = "Only PNG files are allowed.";
                 $hasError = true;
             }
 
-            $imageInfo = getimagesize($product_image['tmp_name']);
+            $imageInfo = getimagesize($editedProduct->image['tmp_name']);
             if ($imageInfo === false) {
                 $productImageError = "Uploaded file is not a valid image.";
                 $hasError = true;
@@ -224,12 +216,12 @@ class ProductModel {
 
         if (!$hasError) {
             $productData = $this->getProductData($idToEdit);
-            $product_image_old = $productData['image'];
-            if ($product_image && $product_image['error'] === UPLOAD_ERR_OK) {
+            $product_image_old = $productData->image;
+            if ($editedProduct->image && $editedProduct->image['error'] === UPLOAD_ERR_OK) {
                 $newFileName = time() . "_" . bin2hex(random_bytes(5)) . '.' . $fileExtension;
                 $uploadPath = 'uploads/' . $newFileName;
 
-                if (!move_uploaded_file($product_image['tmp_name'], $uploadPath)) {
+                if (!move_uploaded_file($editedProduct->image['tmp_name'], $uploadPath)) {
                     $productImageError = "Error uploading the image.";
                     $hasError = true;
                 } else {
@@ -259,11 +251,11 @@ class ProductModel {
                         $oldStock = $product->getElementsByTagName('stock')->item(0)->nodeValue;
                         $oldImage = $product->getElementsByTagName('image')->item(0)->nodeValue;
 
-                        $product->getElementsByTagName('title')->item(0)->nodeValue = $product_title;
-                        $product->getElementsByTagName('description')->item(0)->nodeValue = $product_desc;
-                        $product->getElementsByTagName('category')->item(0)->nodeValue = $product_category;
-                        $product->getElementsByTagName('price')->item(0)->nodeValue = $product_price;
-                        $product->getElementsByTagName('stock')->item(0)->nodeValue = $product_stock;
+                        $product->getElementsByTagName('title')->item(0)->nodeValue = $editedProduct->title;
+                        $product->getElementsByTagName('description')->item(0)->nodeValue = $editedProduct->description;
+                        $product->getElementsByTagName('category')->item(0)->nodeValue = $editedProduct->category;
+                        $product->getElementsByTagName('price')->item(0)->nodeValue = $editedProduct->price;
+                        $product->getElementsByTagName('stock')->item(0)->nodeValue = $editedProduct->stock;
                         $product->getElementsByTagName('image')->item(0)->nodeValue = $imageFileName;
 
                         $dom->save($this->xmlFile);
@@ -274,11 +266,9 @@ class ProductModel {
                         $ProductPriceChangeObserver = new ProductPriceChangeObserver($productSubject);
                         $ProductLogObserver = new ProductLogObserver($productSubject);
 
-                        $productSubject->updateProduct(
-                                $product_id,
-                                $oldTitle, $oldDescription, $oldCategory, $oldPrice, $oldStock, $oldImage,
-                                $product_title, $product_desc, $product_category, $product_price, $product_stock, $imageFileName
-                        );
+                        $oldProduct = new Product($product_id, $oldTitle, $oldDescription, $oldCategory, $oldPrice, $oldStock, $oldImage);
+
+                        $productSubject->updateProduct($oldProduct, $editedProduct);
                     }
                 }
             } catch (Exception $e) {
@@ -312,7 +302,7 @@ class ProductModel {
         }
         return false;
     }
-    
+
     public function getProducts($search = null, $filterCategory = null) {
         $dom = new DOMDocument();
         $dom->load($this->xmlFile);
@@ -324,8 +314,10 @@ class ProductModel {
             $title = $product->getElementsByTagName('title')->item(0)->nodeValue;
             $category = $product->getElementsByTagName('category')->item(0)->nodeValue;
 
-            if ($filterCategory && $filterCategory !== $category) continue;
-            if ($search && stripos($title, $search) === false) continue;
+            if ($filterCategory && $filterCategory !== $category)
+                continue;
+            if ($search && stripos($title, $search) === false)
+                continue;
 
             $filtered[] = $product;
         }

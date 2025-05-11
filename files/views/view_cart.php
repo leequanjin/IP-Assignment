@@ -36,12 +36,12 @@ require_once 'apis/CurrencyConverter.php'; // If not already included
 
         <?php foreach ($cartProductDetails as $product): ?>
             <?php
-            $id = $product['id'];
-            $title = $product['title'];
-            $image = $product['image'];
+            $id = $product->id;
+            $title = $product->title;
+            $image = $product->image;
             $imageSrc = 'uploads/' . $image;
-            $qty = (int) $product['qty'];
-            $price = (float) $product['price'];
+            $qty = (int) $product->qty;
+            $price = (float) $product->price;
 
             $convertedPrice = $price * $conversionRate;
 
