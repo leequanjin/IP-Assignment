@@ -59,9 +59,11 @@ class UserController
             $_SESSION['message'] = 'Invalid gender.';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['message'] = 'Invalid email format.';
-        } elseif (strlen($password) < 6 || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/', $password)) {
+        } elseif (strlen($password) < 6) {
+            $_SESSION['message'] = 'Password must be at least 6 characters.';   
+        } elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/', $password)) {
             $_SESSION['message'] = 'Password must contain uppercase, lowercase, and a number.';
-        } elseif (User::emailExists($email)) {
+        } elseif (UserModel::emailExists($email)) {
             $_SESSION['message'] = 'Email already registered.';
         } else {
             $code = rand(100000, 999999);
@@ -83,6 +85,7 @@ class UserController
         $enteredCode = $_POST['code'];
         if ($_SESSION['register_code'] == $enteredCode) {
             $data = $_SESSION['register_data'];
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT); 
             $user = new User(
                 $data['name'],
                 $data['age'],
@@ -92,7 +95,7 @@ class UserController
                 $data['password'],
                 $data['role']
             );
-            $user->saveToXML();
+            UserModel::saveToXML($user);
             sendConfirmationEmail($data['email'], $data['name']);
 
             unset($_SESSION['register_code'], $_SESSION['register_data']);
@@ -150,8 +153,10 @@ class UserController
             $_SESSION['error'] = 'Maximum age is 100.';
         } elseif (!in_array($gender, ['Male', 'Female'])) {
             $_SESSION['error'] = 'Invalid gender.';
-        } elseif (!empty($password) && (strlen($password) < 6 || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/', $password))) {
-            $_SESSION['error'] = 'Password must contain uppercase, lowercase, and a number.';
+        } elseif (!empty($password) && strlen($password) < 6) {
+            $_SESSION['message'] = 'Password must be at least 6 characters.';
+        } elseif (!empty($password) && !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/', $password)) {
+            $_SESSION['message'] = 'Password must contain uppercase, lowercase, and a number.';
         } else {
             $xml = simplexml_load_file('../../xml-files/users.xml');
             foreach ($xml->user as $user) {

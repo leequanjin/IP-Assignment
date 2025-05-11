@@ -1,5 +1,4 @@
 <!-- Author     : keekeshen -->
-
 <?php
 
 require_once '../models/AdminModel.php';
@@ -43,11 +42,11 @@ class AdminController {
         } elseif (AdminModel::emailExists($email)) {
             $_SESSION['message'] = 'Email already registered.';
         } else {
-            $admin = new AdminModel($name, $age, $gender, $email, $password, $role);
-            $admin->saveToXML();
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $admin = new Admin($name, $age, $gender, $email, $hashedPassword, $role);
+            AdminModel::saveToXML($admin);
 
             $mailSent = sendConfirmationEmail($email, $name);
-
             $_SESSION['message'] = $mailSent 
                 ? 'Admin registered successfully.' 
                 : 'Registered, but failed to send welcome email.';
@@ -77,5 +76,6 @@ class AdminController {
         exit();
     }
 }
+
 $controller = new AdminController();
 $controller->handleRequest();
