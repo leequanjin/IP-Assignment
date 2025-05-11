@@ -3,13 +3,13 @@
 <?php
 require_once 'controllers/ProductController.php';
 
-$product_id = $_POST['product_id'] ?? $productData['id'] ?? '';
-$product_title = $_POST['product_title'] ?? $productData['title'] ?? '';
-$product_desc = $_POST['product_desc'] ?? $productData['desc'] ?? '';
-$product_category = $_POST['product_category'] ?? $productData['category'] ?? '';
-$product_price = $_POST['product_price'] ?? $productData['price'] ?? '';
-$product_stock = $_POST['product_stock'] ?? $productData['stock'] ?? '';
-$product_image = $productData['image'] ?? '';
+$product_id = $_POST['product_id'] ?? $productData->id ?? '';
+$product_title = $_POST['product_title'] ?? $productData->title ?? '';
+$product_desc = $_POST['product_desc'] ?? $productData->description ?? '';
+$product_category = $_POST['product_category'] ?? $productData->category ?? '';
+$product_price = $_POST['product_price'] ?? $productData->price ?? '';
+$product_stock = $_POST['product_stock'] ?? $productData->stock ?? '';
+$product_image = $productData->image ?? '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_image = 'no-image.jpg';
 }

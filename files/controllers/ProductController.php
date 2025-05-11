@@ -29,8 +29,10 @@ class ProductController {
                     $product_image = $_FILES["product_image"];
                     $product_price = prepareInput($_POST["product_price"]);
                     $product_stock = prepareInput($_POST["product_stock"]);
+                    
+                    $product = new Product(0, $product_title, $product_desc, $product_category, $product_price, $product_stock, $product_image);
 
-                    list($productTitleError, $productDescError, $productCategoryError, $productImageError, $productPriceError, $productStockError, $successMessage) = $this->model->insertProduct($product_title, $product_desc, $product_category, $product_image, $product_price, $product_stock);
+                    list($productTitleError, $productDescError, $productCategoryError, $productImageError, $productPriceError, $productStockError, $successMessage) = $this->model->insertProduct($product);
                 }
 
                 include 'views/insert_product.php';
@@ -61,14 +63,6 @@ class ProductController {
             case 'edit':
                 $productTitleError = $productDescError = $productCategoryError = $productImageError = $productPriceError = $productStockError = '';
                 $idToEdit = '';
-                $productData = [
-                    'title' => '',
-                    'desc' => '',
-                    'category' => '',
-                    'price' => '',
-                    'stock' => '',
-                    'image' => ''
-                ];
 
                 $categoryModel = new CategoryModel();
                 $categories = $categoryModel->getAllCategories();
@@ -86,13 +80,15 @@ class ProductController {
                     $product_image = $_FILES["product_image"];
                     $product_price = prepareInput($_POST["product_price"]);
                     $product_stock = prepareInput($_POST["product_stock"]);
+                    
+                    $product = new Product($idToEdit, $product_title, $product_desc, $product_category, $product_price, $product_stock, $product_image);
 
                     list($productTitleError,
                             $productDescError,
                             $productCategoryError,
                             $productImageError,
                             $productPriceError,
-                            $productStockError) = $this->model->editProduct($idToEdit, $product_title, $product_desc, $product_category, $product_image, $product_price, $product_stock);
+                            $productStockError) = $this->model->editProduct($product, $idToEdit);
 
                     if (
                             empty($productTitleError) &&

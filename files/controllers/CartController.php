@@ -33,7 +33,7 @@ class CartController {
                 }
 
             case 'view':
-                $user_email = $_SESSION['email'];
+                $user_email = $_SESSION['email'] ?? '';
                 $cartProducts = $this->model->getUserCart($user_email);
 
                 $productModel = new ProductModel();
