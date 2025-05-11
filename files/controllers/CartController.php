@@ -41,8 +41,8 @@ class CartController {
 
                 foreach ($cartProducts as $productId => $qty) {
                     $productData = $productModel->getProductData($productId);
-                    if (!empty($productData['title'])) {
-                        $productData['qty'] = $qty;
+                    if (!empty($productData->title)) {
+                        $productData->qty = $qty;
                         $cartProductDetails[] = $productData;
                     }
                 }
