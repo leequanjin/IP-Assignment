@@ -1,19 +1,10 @@
 <!-- Author     : keekeshen -->
-
 <?php
+
+require_once 'Admin.php';
+
 class AdminModel {
-    public $name, $age, $gender, $email, $password, $role;
-
-    public function __construct($name, $age, $gender, $email, $password, $role='staff') {
-        $this->name = $name;
-        $this->age = $age;
-        $this->gender = $gender;
-        $this->email = $email;
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
-        $this->role = $role;
-    }
-
-    public function saveToXML($xmlFile = '../../xml-files/admins.xml') {
+    public static function saveToXML(Admin $admin, $xmlFile = '../../xml-files/admins.xml') {
         $doc = new DOMDocument();
         $doc->formatOutput = true;
 
@@ -25,13 +16,13 @@ class AdminModel {
             $doc->appendChild($root);
         }
 
-        $admin = $doc->createElement('admin');
-        foreach (['name', 'age', 'gender', 'email', 'password','role'] as $field) {
-            $elem = $doc->createElement($field, $this->$field);
-            $admin->appendChild($elem);
+        $adminNode = $doc->createElement('admin');
+        foreach (['name', 'age', 'gender', 'email', 'password', 'role'] as $field) {
+            $elem = $doc->createElement($field, $admin->$field);
+            $adminNode->appendChild($elem);
         }
 
-        $root->appendChild($admin);
+        $root->appendChild($adminNode);
         $doc->save($xmlFile);
     }
 
@@ -44,3 +35,4 @@ class AdminModel {
         return false;
     }
 }
+?>

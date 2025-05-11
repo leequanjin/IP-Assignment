@@ -1,20 +1,11 @@
 <!-- Author     : keekeshen -->
-
 <?php
-class User {
-    public $name, $age, $gender, $email, $address, $password, $role;
 
-    public function __construct($name, $age, $gender, $email, $address, $password, $role = 'user') {
-        $this->name = $name;
-        $this->age = $age;
-        $this->gender = $gender;
-        $this->email = $email;
-        $this->address = $address;
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
-        $this->role = $role;
-    }
+require_once 'User.php';
 
-    public function saveToXML($xmlFile = '../../xml-files/users.xml') {
+class UserModel {
+
+    public static function saveToXML(User $user, $xmlFile = '../../xml-files/users.xml') {
         $doc = new DOMDocument();
         $doc->formatOutput = true;
 
@@ -26,27 +17,28 @@ class User {
             $doc->appendChild($root);
         }
 
-        $user = $doc->createElement('user');
-        foreach (['name', 'age', 'gender', 'email', 'address', 'password','role'] as $field) {
-            $elem = $doc->createElement($field, $this->$field);
-            $user->appendChild($elem);
+        $userNode = $doc->createElement('user');
+
+        foreach (['name', 'age', 'gender', 'email', 'address', 'password', 'role'] as $field) {
+            $value = $user->$field;  
+            $elem = $doc->createElement($field, $value);
+            $userNode->appendChild($elem);
         }
 
-        $root->appendChild($user);
+        $root->appendChild($userNode);
         $doc->save($xmlFile);
     }
-    
+
     public static function emailExists($email, $xmlFile = '../../xml-files/users.xml') {
-    if (!file_exists($xmlFile)) return false;
+        if (!file_exists($xmlFile)) return false;
 
-    $xml = simplexml_load_file($xmlFile);
-    foreach ($xml->user as $user) {
-        if ((string)$user->email === $email) {
-            return true;
+        $xml = simplexml_load_file($xmlFile);
+        foreach ($xml->user as $user) {
+            if ((string)$user->email === $email) {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
-
 }
 ?>
